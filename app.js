@@ -8,6 +8,7 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var db = require('./db');
 
 var app = express();
 
@@ -31,30 +32,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-l = console.log
-
-getUser = function(db, name, callback) {
-    var users = db.collection("users")
-    return users.find({name : name}).toArray(callback);
-}
-
-var MongoClient = require('mongodb').MongoClient;
-// Connect to the db
-DB = {
-    addr : 'localhost',
-    port : '27017',
-    name : 'test'
-}
-MongoClient.connect("mongodb://"+ DB.addr +":" + DB.port +"/"+DB.name, function(err, db) {
-    if(!err) {
-        console.log("We are connected");
-        l(getUser(db, "test", function(a,b){
-l(b)
-           }));
-    } else {
-        console.log("Beda")
-    }
-});
+console.log(db.get())
 
 app.get('/', routes.index);
 app.get('/db', routes.db);
