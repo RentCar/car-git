@@ -57,6 +57,7 @@ l(b)
 });
 
 app.get('/', routes.index);
+app.get('/db', routes.db);
 app.get('/users', user.list);
 
 app.get('/php', function(req, res) {
