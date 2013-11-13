@@ -32,12 +32,16 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-console.log(db.get())
+var l = console.log
+
+function getTrips(type, filter, callback) {
+	// type : boolean - if it's true we're looking for orders otherwise for offers
+	filter[type ? "passenger" :"driver"] = {$exists : true};
+	console.log(filter);
+	db.get('trips', filter, callback);
+}
 
 app.get('/', routes.index);
-app.get('/db', routes.db);
-app.get('/users', user.list);
-
 app.get('/php', function(req, res) {
     var exec = require("child_process").exec;
     var scriptName = 'get_json.php'
@@ -57,6 +61,18 @@ app.get('/php', function(req, res) {
         }
     );
 });
+
+app.get('/driver', function(req, res){
+	getTrips(true, {}, function(err, data){
+		res.render('index', {result : data, RequestedUserType : "passenger"});
+	});
+})
+
+app.get('/passenger', function(req, res){
+	getTrips(false, {}, function(err, data){
+		res.render('index', {result : data, RequestedUserType : "driver"});
+	});
+})
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

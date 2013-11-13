@@ -1,32 +1,27 @@
-l = console.log
-
-getUser = function(db, name, callback) {
-    var users = db.collection("users")
-    return users.find({name : name}).toArray(callback);
-}
-
 var MongoClient = require('mongodb').MongoClient;
-// Connect to the db
+// Connect to the db 
+	//Thanks, Cap
 DB = {
     addr : 'localhost',
     port : '27017',
     name : 'test'
 }
 
-MongoClient.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name, {}, conn);
+var mongoConnect = function() {
+	var db = null;
+	return function(callback){
+		if(!db){
+			MongoClient.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name, {}, function(err, thisdb){
+				db = thisdb;
+				callback(db)
+			});
+		} else callback(db);
+	}
+}()
 
-function conn(err, db) {
-    if (!err) {
-        console.log("We are connected");
-        l(getUser(db, "test", function (a, b) {
-            l(b)
-        }));
-    } else {
-        console.log("Beda")
-    }
-}
-
-
-exports.get = function() {
-    return {a:1}
+exports.get = function(table, filter, callback) {
+	var db = mongoConnect(function(db){
+		console.log(table);
+		db.collection(table).find(filter).toArray(callback);
+	});	
 }
