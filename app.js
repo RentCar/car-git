@@ -9,6 +9,14 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 var db = require('./db');
+var io = require('socket.io').listen(3001)
+
+io.sockets.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
 
 var app = express();
 
@@ -26,6 +34,7 @@ app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/socket.io')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -37,6 +46,10 @@ console.log(db.get())
 app.get('/', routes.index);
 app.get('/db', routes.db);
 app.get('/users', user.list);
+
+app.get('/sockets', function(req, res) {
+    res.render('sockets-test')
+})
 
 app.get('/php', function(req, res) {
     var exec = require("child_process").exec;
