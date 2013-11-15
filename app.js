@@ -34,44 +34,12 @@ if ('development' == app.get('env')) {
 
 var l = console.log
 
-function getTrips(type, filter, callback) {
-	// type : boolean - if it's true we're looking for orders otherwise for offers
-	filter[type ? "passenger" :"driver"] = {$exists : true};
-	console.log(filter);
-	db.get('trips', filter, callback);
-}
-
-app.get('/', routes.index);
-app.get('/php', function(req, res) {
-    var exec = require("child_process").exec;
-    var scriptName = 'get_json.php'
-    exec("php php_scripts/" + scriptName,
-        function (error, stdout, stderr) {
-            var url = require('url');
-            var urlData = url.parse(req.url, true);
-            console.log(urlData.query.glo);
-            if(urlData.query.glo) {
-                global.testVar = urlData.query.glo;
-            }
-            res.render('customer', {
-                title : 'O_O',
-                testVar : global.testVar || 100,
-                data : JSON.parse(stdout)
-            });
-        }
-    );
-});
-
 app.get('/driver', function(req, res){
-	getTrips(true, {}, function(err, data){
-		res.render('index', {result : data, RequestedUserType : "passenger"});
-	});
+	routes.index(req, res, true);
 })
 
-app.get('/passenger', function(req, res){
-	getTrips(false, {}, function(err, data){
-		res.render('index', {result : data, RequestedUserType : "driver"});
-	});
+app.get('/', function(req, res){ 
+	routes.index(req, res, false);
 })
 
 http.createServer(app).listen(app.get('port'), function(){
