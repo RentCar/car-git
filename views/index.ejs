@@ -33,7 +33,7 @@ if(result) {
 	for(var i in result){
 %>
 	<div>
-		<%= result[i][RequestedUserType].name %>
+		<%= result[i][RequestedUserType].firstName+" "+result[i][RequestedUserType].lastName %>
 	</div>
 <%
 	}

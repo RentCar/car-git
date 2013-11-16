@@ -41,6 +41,8 @@ app.get('/driver', function(req, res){
 app.get('/', function(req, res){ 
 	routes.index(req, res, false);
 })
+app.get('/login', routes.login);
+app.get('/createOffer', routes.saveTrip);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
