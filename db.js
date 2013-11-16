@@ -46,7 +46,7 @@ function saveTrip(dId, pIp, fromId, toId, price, callback){
 		tripObj.dPrice = price
 	} 
 	else {
-		tripObj.passenger = dId;
+		tripObj.passenger = pIp;
 		tripObj.pPrice = price
 	}
 	newTrip = new trip(tripObj);
@@ -65,7 +65,7 @@ exports.saveUser = function(userObj, callback) {
 }
 
 exports.createTrip = function(isDriver, from, to, price, callback){
-	user.findOne({firstName : "John"}, function(err, dataUser){		
+	user.findOne({firstName : "Thomas"}, function(err, dataUser){		
 		savePoint(from, function(err, dataFrom){		
 			if(!err){
 				savePoint(to, function(err, dataTo){				
@@ -82,6 +82,5 @@ exports.createTrip = function(isDriver, from, to, price, callback){
 exports.getTrips = function(isDriver, filter, callback){
 	filter = filter || {};
 	filter[isDriver ? "passenger" :"driver"] = {$exists : true};
-	console.log(filter)
 	trip.find(filter).populate(isDriver ? "passenger" :"driver").populate("from").populate("to").exec(callback);
 }
