@@ -35,21 +35,24 @@
                 <ul class="menu">
                     <li><a href="#/view1">view1</a></li>
                     <li><a href="#/view2">view2</a></li>
+                    <li><a href="#/userBlock">userBlock</a></li>
                 </ul>
                 <div data-ng-view></div>
 
                 <hr/>
-                <div ng-controller="socketsCtrl">
-                    <input type="text" ng-model="sc"/>
-                    <h5>Sockets {{sc}}</h5>
-                    <span>Name: {{user.name}}</span>
-                    <br/>
-                    <span>Test: {{user.test}}</span>
-                </div>
+
 
             </div>
             <div class="col-xs-6 col-md-4">
                 <h3>Sockets test[Results in future]</h3>
+
+                <div ng-controller="socketsCtrl">
+                    <input type="text" ng-model="sc"/>
+                    <h5>Sockets {{sc}}</h5>
+                    <span>Name: <span ng-bind="user.name"></span></span>
+                    <br/>
+                    <span ng-cloak>Test: {{user.test}}</span>
+                </div>
                 <%// - include sockets-test.ejs %>
             </div>
         </div>

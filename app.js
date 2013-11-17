@@ -29,7 +29,7 @@ app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
-app.use(express.static(path.join(__dirname, '/lib')));
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -64,6 +64,14 @@ app.get('/php', function(req, res) {
     );
 });
 
+/**
+ * Angular tests
+ */
+app.get('/userBlock', function(req, res) {
+    res.render('partials/userBlock');
+})
+
+// running the server
 var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });

@@ -1,15 +1,15 @@
 /**
  * Created by Artem on 17.11.13.
+ * list of uses services
  */
 
 define([
-    './sockets'
+    './socketsFactory'
+    // Constant
+    // Value
+    // Service
+    // Provider
+    // Декоратор
 ], function () {
     console.log("Defined all services")
 });
-
-//define(['angular'], function (ng) {
-//    'use strict';
-//    console.log("Returning module 'app.services", ng);
-//    return ng.module('app.services', []);
-//});
