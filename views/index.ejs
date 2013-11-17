@@ -29,11 +29,38 @@
             <h1>Car Rent</h1>
         </div>
 
-        <h2>Sockets</h2>
-        <%- include sockets-test.ejs %>
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <h3>Angular test[Search in future]</h3>
+                <ul class="menu">
+                    <li><a href="#/view1">view1</a></li>
+                    <li><a href="#/view2">view2</a></li>
+                </ul>
+                <div data-ng-view></div>
+
+                <hr/>
+                <div ng-controller="socketsCtrl">
+                    <input type="text" ng-model="sc"/>
+                    <h5>Sockets {{sc}}</h5>
+                    <span>Name: {{user.name}}</span>
+                    <br/>
+                    <span>Test: {{user.test}}</span>
+                </div>
+
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <h3>Sockets test[Results in future]</h3>
+                <%// - include sockets-test.ejs %>
+            </div>
+        </div>
+
     </div>
 </div>
 
+<script type=text/ng-template id=test2.html>
+    <!-- Settings -->
+    <p>Settings go here ...</p>
+</script>
 
 <script src="/js/libs/requirejs/require.js" data-main="js/main.js"></script>
 </body>

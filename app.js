@@ -74,9 +74,21 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  */
 var io = require('socket.io').listen(server)
 
+var users = {}
+
 io.sockets.on('connection', function (socket) {
-    socket.emit("newUser", { hello: 'NewUser' });
+//    console.log(socket)
+    users[socket.store.id] = {
+        //socket : socket.store,
+        user : {
+            name: "Artem",
+            test: "someTest"
+        }
+    }
+    socket.emit("newUser", { hello: socket.store.id});
+
     socket.on('data', function (data) {
         console.log(data);
+        socket.emit("userData", {data: users[socket.store.id]})
     });
 });

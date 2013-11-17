@@ -3,6 +3,7 @@ require.config({
     paths: {
         'domReady': 'libs/requirejs-domready/domReady',
         'angular': 'libs/angular/angular',
+        'socket.io': '/socket.io/socket.io.js'
        // 'jquery': 'libs/jquery/jquery'
     },
     // angular does not support AMD out of the box, put it in a shim
@@ -10,7 +11,7 @@ require.config({
         'angular': {
             exports: 'angular'
         }
-    }/*,*/
+    },
     // kick start application
-//    deps: ['./bootstrap.min']
+    deps: ['./angular-init']
 });

@@ -6,6 +6,10 @@
         socket.emit('data', { my: 'data' });
     });
 
+    socket.on("userData", function(data) {
+        console.log(data)
+    })
+
     var testData = (function() {
         var i = 0
         return function() {
