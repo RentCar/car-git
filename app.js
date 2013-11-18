@@ -86,17 +86,25 @@ var users = {}
 
 io.sockets.on('connection', function (socket) {
 //    console.log(socket)
-    users[socket.store.id] = {
-        //socket : socket.store,
-        user : {
-            name: "Artem",
-            test: "someTest"
-        }
-    }
+    var testString = "TestString"
+    var iter = 0
+
     socket.emit("newUser", { hello: socket.store.id});
 
     socket.on('data', function (data) {
         console.log(data);
-        socket.emit("userData", {data: users[socket.store.id]})
+        setInterval(function() {
+
+            iter++
+            users[socket.store.id] = {
+                //socket : socket.store,
+                user : {
+                    name: "Artem",
+                    test: testString + iter
+                }
+            }
+
+            socket.emit("userData", {data: users[socket.store.id]})
+        }, 5 * 1000)
     });
 });
