@@ -39,8 +39,11 @@
                     <span>Name: <span ng-bind="user.name"></span></span>
                     <br/>
                     <span ng-cloak>Test: {{user.test}}</span>
+                    <br/> 
+                    <input ng-model="newUsername" type="text"/>
+                    <button ng-click="addUser()">ADD</button>
                     <ul>
-                        <li ng-repeat="user in socketData">
+                        <li ng-repeat="user in socketData | filter:newUsername">
                             <span ng-bind="user.name"></span>
                             <span>{{user.test}}</span>
                         </li>

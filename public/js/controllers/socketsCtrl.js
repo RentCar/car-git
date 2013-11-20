@@ -26,13 +26,23 @@ define(['./module'], function (controllers) {
             test: 'bred2'
         }];
 
+        $scope.addUser = function() {
+            $scope.socketData.push({
+                name: $scope.newUsername,
+                test: new Date().getDate()
+            })
+        }
+
         socket.on("userData", function(data) {
 //            $scope.socketData.push({})
 //            angular.forEach(data.data.user, function(value, key){
 //                console.log(data.data.user)
 //                $scope.socketData[$scope.socketData.length -1][key] = value; // or $scope.list[key] = value;
 //            });
-            $scope.socketData.push(angular.fromJson(data.data.user));
+            $scope.$apply(function () {
+                $scope.socketData.push(angular.fromJson(data.data.user));
+            });
+
             console.log($scope.socketData)
         })
 
