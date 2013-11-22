@@ -12,6 +12,9 @@ var db = require('./db');
 
 var app = express();
 
+var social = require('./social');
+
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +26,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
 app.use(express.session());
+social.init(app);
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -38,12 +42,19 @@ app.get('/driver', function(req, res){
 	routes.index(req, res, true);
 })
 
-app.get('/', function(req, res){ 
+app.get('/', function(req, res){
 	routes.index(req, res, false);
 })
+
 app.get('/login', routes.login);
 app.get('/createOffer', routes.saveTrip);
+
+app.get('/login/fb', social.fbLogin);
+app.get('/login/fbcallback', social.fbLoginCallback);
+l(social);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
