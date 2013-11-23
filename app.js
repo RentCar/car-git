@@ -40,43 +40,6 @@ if ('development' == app.get('env')) {
 
 routes.init(app, {social : social});
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-app.get('/', routes.index);
-app.get('/db', routes.db);
-app.get('/users', user.list);
-
-app.get('/sockets', function(req, res) {
-    res.render('sockets-test')
-});
-
-app.get('/php', function(req, res) {
-    var exec = require("child_process").exec;
-    var scriptName = 'get_json.php'
-    exec("php php_scripts/" + scriptName,
-        function (error, stdout, stderr) {
-            var url = require('url');
-            var urlData = url.parse(req.url, true);
-            console.log(urlData.query.glo);
-            if(urlData.query.glo) {
-                global.testVar = urlData.query.glo;
-            }
-            res.render('customer', {
-                title : 'O_O',
-                testVar : global.testVar || 100,
-                data : JSON.parse(stdout)
-            });
-        }
-    );
-});
-
-/**
- * Angular tests
- */
-app.get('/userBlock', function(req, res) {
-    res.render('partials/userBlock');
-})
-
 // running the server
 var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
