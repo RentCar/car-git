@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -7,10 +8,12 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var db = require('./db');
 
 var app = express();
 var appPort = parseInt(process.argv.slice(2)) || 3000;
+
+var social = require('./social');
+
 
 // all environments
 app.set('port', process.env.PORT || appPort);
@@ -23,6 +26,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('SecretPass'));
 app.use(express.session());
+social.init(app);
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,6 +38,10 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
+routes.init(app, {social : social});
+
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 app.get('/', routes.index);
 app.get('/db', routes.db);
 app.get('/users', user.list);
