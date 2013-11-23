@@ -9,7 +9,7 @@ define(['./init', 'socket.io'], function (services, io) {
     console.log("Init Socket factory")
     // added 'socket' factory to services array
     // init factory (angular)
-    services.factory('sockets', [function () {
+    services.factory('socket', [function () {
 
         console.log("socket factory: ", io)
 

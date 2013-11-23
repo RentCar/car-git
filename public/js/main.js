@@ -3,6 +3,7 @@ require.config({
     paths: {
         'domReady': 'libs/requirejs-domready/domReady',
         'angular': 'libs/angular/angular',
+        'angular-route': 'libs/angular-route/angular-route',
         'socket.io': '/socket.io/socket.io.js'
        // 'jquery': 'libs/jquery/jquery'
     },
@@ -10,6 +11,9 @@ require.config({
     shim: {
         'angular': {
             exports: 'angular'
+        },
+        'angular-route' : {
+            deps: ['angular']
         }
     },
     // kick start application

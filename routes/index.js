@@ -4,7 +4,9 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'CAR TEST' });
+  res.render('index',
+      { title: 'Destination.to' }
+  );
 };
 
 exports.db = function(req, res) {
