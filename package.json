@@ -13,6 +13,9 @@
     "monk": "0.7.1",
     "mongoose": ">= 0",
     "socket.io": ">= 0.9",
-    "bower": ">= 0"
+    "bower": ">= 0",
+    "passport": ">= 0",
+    "passport-facebook": ">=0",
+    "pg": ">= 0"
   }
 }

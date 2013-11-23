@@ -2,13 +2,6 @@
  * GET home page.
  */
 
-exports.index = function(req, res){
-  res.render('index',
-      { title: 'Destination.to' }
-  );
-};
-
-
 exports.init = function(app, modules){
 
     /**
@@ -30,7 +23,11 @@ exports.init = function(app, modules){
 
     app.get('/', function(req, res){
         db.getTrips(false, {}, function(err, data){
-            res.render('index', {result : data, RequestedUserType : "driver"});
+            res.render('index', {
+                result : data,
+                RequestedUserType : "driver",
+                title: 'Destination.to'
+            });
         });
     });
 
