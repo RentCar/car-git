@@ -1,6 +1,7 @@
 var passport = require('passport')
     , FacebookStrategy = require('passport-facebook').Strategy;
 var pgModel = require('./pgModel');
+var db = require('./db');
 
 var CONSTANTS = {
 	FACEBOOK : 1
@@ -12,13 +13,16 @@ passport.use(new FacebookStrategy({
 		callbackURL: "http://94.244.155.77:3000/login/fbcallback"
 	},
 	function(accessToken, refreshToken, profile, done) {
-		pgModel.addOrGetUser(CONSTANTS.FACEBOOK, profile, function(err, result){
-			console.log(result);
-			done(null, profile);
+		console.log(profile);
+		pgModel.addOrGetUser(CONSTANTS.FACEBOOK, profile._json, function(err, result){
+            result.socialId = profile.id;
+			db.findOrSaveUser(result, function(err, data){
+				done(null, profile);
+			});
 		});
 	}
-)); 
-	
+));
+
 exports.init = function(app) {
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -31,7 +35,7 @@ exports.init = function(app) {
 }
 
 exports.fbLogin = function(req, res){
-	passport.authenticate('facebook')(req, res);
+	passport.authenticate('facebook', {scope: ["email"]})(req, res);
 }
 exports.fbLoginCallback = function(req, res){
 	passport.authenticate('facebook', { successRedirect: '/',

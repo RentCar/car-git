@@ -21,10 +21,14 @@ function savePoint(data, callback){
 }
 
 var userSchema = new Schema({
-	firstName : String,
-	lastName : String,
+    socialId : String,
+	first_name : String,
+	last_name : String,
 	avatar : String,
-	karma : {type : Number, default : 0}
+	karma : {type : Number, default : 0},
+    location : String,
+    gender : Boolean,
+    timezone : Number
 });
 var user = mongoose.model('user', userSchema);
 
@@ -60,7 +64,7 @@ exports.get = function(table, filter, callback) {
 }
 
 exports.saveUser = function(userObj, callback) {
-	newUser = new user(userObj);
+	var newUser = new user(userObj);
 	newUser.save(callback); 
 }
 
@@ -83,4 +87,19 @@ exports.getTrips = function(isDriver, filter, callback){
 	filter = filter || {};
 	filter[isDriver ? "passenger" :"driver"] = {$exists : true};
 	trip.find(filter).populate(isDriver ? "passenger" :"driver").populate("from").populate("to").exec(callback);
+}
+
+exports.findOrSaveUser = function(profile, callback){
+    user.findOne({socialId : profile.socialId}, function(err, data){
+        if(err) {
+            callback(err);
+            return
+        }
+        if(data) {
+            callback(null, data);
+        }
+        else{
+          this.saveUser(profile, callback);
+        }
+    })
 }
