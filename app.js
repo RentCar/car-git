@@ -2,9 +2,6 @@
  * Module dependencies.
  */
 
-// TODO: port to local dev config;
-var appPort = 3030;
-
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -13,6 +10,7 @@ var path = require('path');
 var db = require('./db');
 
 var app = express();
+var appPort = parseInt(process.argv.slice(2)) || 3000;
 
 // all environments
 app.set('port', process.env.PORT || appPort);
@@ -42,7 +40,7 @@ app.get('/users', user.list);
 
 app.get('/sockets', function(req, res) {
     res.render('sockets-test')
-})
+});
 
 app.get('/php', function(req, res) {
     var exec = require("child_process").exec;
@@ -80,9 +78,9 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  * Sockets part TODO: move to controller
  * @type {*}
  */
-var io = require('socket.io').listen(server)
+var io = require('socket.io').listen(server);
 
-var users = {}
+var users = {};
 
 io.sockets.on('connection', function (socket) {
 //    console.log(socket)
