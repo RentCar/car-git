@@ -2,7 +2,7 @@
 
 $test_json = array(
     'a' => 100,
-    'name' => 'John',
+    'name' => 'John2',
     'surname' => 'Smith',
     'gender' => 'mr.',
     'trips' => array(1,2,3,4,5,6)

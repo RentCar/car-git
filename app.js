@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -8,11 +7,13 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var db = require('./db');
 
 var app = express();
+var appPort = parseInt(process.argv.slice(2)) || 3000;
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || appPort);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.favicon());
@@ -20,45 +21,26 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('SecretPass'));
 app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/socket.io')));
+
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
-
-l = console.log
-
-getUser = function(db, name, callback) {
-    var users = db.collection("users")
-    return users.find({name : name}).toArray(callback);
-}
-
-var MongoClient = require('mongodb').MongoClient;
-// Connect to the db
-DB = {
-    addr : 'localhost',
-    port : '27017',
-    name : 'test'
-}
-MongoClient.connect("mongodb://"+ DB.addr +":" + DB.port +"/"+DB.name, function(err, db) {
-    if(!err) {
-        console.log("We are connected");
-        l(getUser(db, "test", function(a,b){
-l(b)
-           }));
-    } else {
-        console.log("Beda")
-    }
-});
 
 app.get('/', routes.index);
 app.get('/db', routes.db);
 app.get('/users', user.list);
+
+app.get('/sockets', function(req, res) {
+    res.render('sockets-test')
+});
 
 app.get('/php', function(req, res) {
     var exec = require("child_process").exec;
@@ -80,6 +62,47 @@ app.get('/php', function(req, res) {
     );
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+/**
+ * Angular tests
+ */
+app.get('/userBlock', function(req, res) {
+    res.render('partials/userBlock');
+})
+
+// running the server
+var server = http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+});
+
+/**
+ * Sockets part TODO: move to controller
+ * @type {*}
+ */
+var io = require('socket.io').listen(server);
+
+var users = {};
+
+io.sockets.on('connection', function (socket) {
+//    console.log(socket)
+    var testString = "TestString"
+    var iter = 0
+
+    socket.emit("newUser", { hello: socket.store.id});
+
+    socket.on('data', function (data) {
+        console.log(data);
+        setInterval(function() {
+
+            iter++
+            users[socket.store.id] = {
+                //socket : socket.store,
+                user : {
+                    name: "Artem",
+                    test: testString + iter
+                }
+            }
+
+            socket.emit("userData", {data: users[socket.store.id]})
+        }, 5 * 1000)
+    });
 });
