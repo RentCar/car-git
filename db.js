@@ -99,7 +99,7 @@ exports.findOrSaveUser = function(profile, callback){
             callback(null, data);
         }
         else{
-          this.saveUser(profile, callback);
+          exports.saveUser(profile, callback);
         }
     })
 }
