@@ -23,12 +23,13 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('SecretPass'));
 app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
+
 
 // development only
 if ('development' == app.get('env')) {
@@ -63,6 +64,14 @@ app.get('/php', function(req, res) {
     );
 });
 
+/**
+ * Angular tests
+ */
+app.get('/userBlock', function(req, res) {
+    res.render('partials/userBlock');
+})
+
+// running the server
 var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
@@ -73,9 +82,21 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  */
 var io = require('socket.io').listen(server)
 
+var users = {}
+
 io.sockets.on('connection', function (socket) {
-    socket.emit("newUser", { hello: 'NewUser' });
+//    console.log(socket)
+    users[socket.store.id] = {
+        //socket : socket.store,
+        user : {
+            name: "Artem",
+            test: "someTest"
+        }
+    }
+    socket.emit("newUser", { hello: socket.store.id});
+
     socket.on('data', function (data) {
         console.log(data);
+        socket.emit("userData", {data: users[socket.store.id]})
     });
 });
