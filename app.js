@@ -36,22 +36,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-var l = console.log
-
-app.get('/driver', function(req, res){
-	routes.index(req, res, true);
-})
-
-app.get('/', function(req, res){
-	routes.index(req, res, false);
-})
-
-app.get('/login', routes.login);
-app.get('/createOffer', routes.saveTrip);
-
-app.get('/login/fb', social.fbLogin);
-app.get('/login/fbcallback', social.fbLoginCallback);
-l(social);
+routes.init(app, {social : social});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
