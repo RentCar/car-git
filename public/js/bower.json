@@ -20,7 +20,7 @@
   ],
   "dependencies": {
       "angular": "~1.2.0",
-      "angular-route": "~0.9",
+      "angular-route": "~1.2.2",
       "requirejs": "~2.1.8",
       "requirejs-domready": "~2.0.1"
   }

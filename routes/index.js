@@ -1,6 +1,7 @@
 /*
  * GET home page.
  */
+var db = "./../db";
 
 exports.init = function(app, modules){
 

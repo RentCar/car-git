@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-
+CONFIG = require('./config');
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -14,9 +14,8 @@ var appPort = parseInt(process.argv.slice(2)) || 3000;
 
 var social = require('./social');
 
-
 // all environments
-app.set('port', process.env.PORT || appPort);
+app.set('port', process.env.PORT || CONFIG.appPort);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.favicon());
