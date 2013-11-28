@@ -16,6 +16,8 @@
     "bower": ">= 0",
     "passport": ">= 0",
     "passport-facebook": ">=0",
+    "passport-google": ">=0",
     "pg": ">= 0"
+
   }
 }

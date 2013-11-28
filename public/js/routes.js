@@ -17,6 +17,11 @@ define(['./app'], function (app) {
             controller: 'userCtrl'
         })
 
+        $routeProvider.when('/driverForm', {
+            templateUrl: 'driverForm',
+            controller: 'driverFormCtrl'
+        })
+
          $routeProvider.otherwise({
              redirectTo: '/view1'
          });
