@@ -1,0 +1,52 @@
+<form ng-controller="driverFormCtrl" class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <p class="form-control-static">email@example.com</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> NEAR FUTURE
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-10">
+            <input ng-model="driver.startpoint" type="text" class="form-control" placeholder="Address">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 control-label">Destination</label>
+        <div class="col-sm-10">
+            <input ng-model="driver.destination" type="text" class="form-control" placeholder="Address">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 control-label">Time/Date</label>
+        <div class="col-sm-10">
+            <input ng-model="driver.date" type="text" class="form-control" placeholder="Time/Date">
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 control-label">Price</label>
+        <div class="col-sm-10">
+            <input ng-model="driver.price" type="text" class="form-control" id="2" placeholder="100$">
+        </div>
+    </div>
+
+    <input ng-click="offer()" value="GO" type="button"/>
+    <!--<input id="searchTextField" type="text" size="50" placeholder="Enter a location" autocomplete="on">-->
+
+</form>

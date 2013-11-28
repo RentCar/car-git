@@ -11,6 +11,9 @@ exports.init = function(app, modules){
     app.get('/userBlock', function(req, res) {
         res.render('partials/userBlock');
     })
+    app.get('/driverForm', function(req, res) {
+        res.render('partials/driverForm');
+    })
     app.get('/sockets', function(req, res) {
         res.render('sockets-test')
     });
