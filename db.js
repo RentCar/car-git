@@ -10,6 +10,8 @@ mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
 var pointSchema = new Schema({
 	x : Number,
 	y : Number,
+    country : String,
+    city : String,
 	address : String,
 	comment : String
 });
@@ -34,6 +36,7 @@ var userSchema = new Schema({
 var user = mongoose.model('user', userSchema);
 
 var tripSchema =  new Schema ({
+    date: { type: String, default: (new Date()).getTime() },
 	from : {type : Schema.Types.ObjectId, ref : 'point'},
 	to : {type : Schema.Types.ObjectId, ref : 'point'},
 	driver : {type : Schema.Types.ObjectId, ref : 'user'},
@@ -65,25 +68,25 @@ exports.get = function(table, filter, callback) {
 }
 
 exports.saveUser = function(userObj, callback) {
-	console.log("we're trying to save user");
-	console.log(userObj);
 	var newUser = new user(userObj);	
 	newUser.save(callback); 
 }
 
-exports.createTrip = function(isDriver, from, to, price, callback){
-	user.findOne({firstName : "Thomas"}, function(err, dataUser){		
-		savePoint(from, function(err, dataFrom){		
+exports.createTrip = function(user, isDriver, from, to, price, callback){
+        if(!user) {
+            callback("user is not authifacated");
+            return false;
+        }
+		savePoint(from, function(err, dataFrom){
 			if(!err){
 				savePoint(to, function(err, dataTo){				
 					if(!err){
-						saveTrip((isDriver ? dataUser.id : null), (!isDriver ? dataUser.id : null), dataFrom._id, dataTo._id, price, 
+						saveTrip((isDriver ? user._id : null), (!isDriver ? user._id : null), dataFrom._id, dataTo._id, price,
 						callback);
 					}
 				})
 			}
 		})
-	})
 }
 
 exports.getTrips = function(isDriver, filter, callback){

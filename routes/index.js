@@ -23,6 +23,7 @@ exports.init = function(app, modules){
     });
 
     app.get('/', function(req, res){
+        console.log(req.user);
         db.getTrips(false, {}, function(err, data){
             res.render('index', {
                 result : data,
@@ -53,7 +54,8 @@ exports.init = function(app, modules){
 	});
 
     app.get('/createOffer', function(req, res) {
-        db.createTrip(1, {x: 34, y: 85}, {x: 50, y: 154}, 100, function(err, data){
+        db.createTrip(req.user, 1, {x: 34, y: 85}, {x: 50, y: 154}, 100, function(err, data){
+            console.log(err);
             res.render('tripCreatedMessage', data);
         })
     });
