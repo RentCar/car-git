@@ -7,54 +7,105 @@
 
 <body>
 
-
-<div id="wrap">
-
+<header class="navbar navbar-default navbar-static-top" role="navigation">
+    <%- include header%>
+</header>
     <!-- Begin page content -->
-    <div class="container">
-        <div class="page-header">
-            <h1>[Header]</h1>
+<div class="container">
+    <!--<div class="page-header">-->
+        <!--<h1>[Header]</h1>-->
+    <!--</div>-->
+
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h2>[Search]</h2>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Email</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">email@example.com</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> NEAR FUTURE
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">Address</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">Destination</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">Time/Date</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Time/Date">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 control-label">Price</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="2" placeholder="100$">
+                        </div>
+                    </div>
+
+                    <input id="searchTextField" type="text" size="50" placeholder="Enter a location" autocomplete="on">
+
+                </form>
+            <!--<ul class="menu">-->
+                <!--<li><a href="#/view1">view1</a></li>-->
+                <!--<li><a href="#/view2">view2</a></li>-->
+                <!--<li><a href="#/userBlock">userBlock</a></li>-->
+            <!--</ul>-->
+            <!--<div data-ng-view></div>-->
+
+            <hr/>
+
+
         </div>
+        <div class="col-xs-12 col-md-6">
+            <h2>[Results in future]</h2>
 
-        <div class="row">
-            <div class="col-xs-12 col-md-8">
-                <h3>Angular test[Search in future]</h3>
-                <ul class="menu">
-                    <li><a href="#/view1">view1</a></li>
-                    <li><a href="#/view2">view2</a></li>
-                    <li><a href="#/userBlock">userBlock</a></li>
-                </ul>
-                <div data-ng-view></div>
+            <!--<div ng-controller="socketsCtrl">-->
+                <!--<input type="text" ng-model="sc"/>-->
+                <!--<h5>Sockets {{sc}}</h5>-->
+                <!--<span>Name: <span ng-bind="user.name"></span></span>-->
+                <!--<br/>-->
+                <!--<span ng-cloak>Test: {{user.test}}</span>-->
+                <!--<br/>-->
+                <!--<input ng-model="newUsername" type="text"/>-->
+                <!--<button ng-click="addUser()">ADD</button>-->
+                <!--<ul>-->
+                    <!--<li ng-repeat="user in socketData | filter:newUsername">-->
+                        <!--<span ng-bind="user.name"></span>-->
+                        <!--<span>{{user.test}}</span>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
 
-                <hr/>
-
-
-            </div>
-            <div class="col-xs-6 col-md-4">
-                <h3>Sockets test[Results in future]</h3>
-
-                <div ng-controller="socketsCtrl">
-                    <input type="text" ng-model="sc"/>
-                    <h5>Sockets {{sc}}</h5>
-                    <span>Name: <span ng-bind="user.name"></span></span>
-                    <br/>
-                    <span ng-cloak>Test: {{user.test}}</span>
-                    <br/> 
-                    <input ng-model="newUsername" type="text"/>
-                    <button ng-click="addUser()">ADD</button>
-                    <ul>
-                        <li ng-repeat="user in socketData | filter:newUsername">
-                            <span ng-bind="user.name"></span>
-                            <span>{{user.test}}</span>
-                        </li>
-                    </ul>
-                </div>
-                <%// - include sockets-test.ejs %>
-            </div>
         </div>
-
     </div>
+
 </div>
+
 
 <script type=text/ng-template id=test2.html>
     <!-- Settings -->
