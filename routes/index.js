@@ -38,8 +38,19 @@ exports.init = function(app, modules){
         })
     });
 
-    app.get('/login/fb', modules.social.fbLogin);
-    app.get('/login/fbcallback', modules.social.fbLoginCallback);
+    app.get('/login/fb', function(req, res){
+		modules.social.login("facebook", req, res, ["email"]);
+	});
+    app.get('/login/fbcallback', function(req, res){
+		modules.social.loginCallback("facebook", req, res);
+	});
+	
+	app.get('/login/gp', function(req, res){
+		modules.social.login("google", req, res, ["https://www.googleapis.com/auth/plus.login"])
+	});
+    app.get('/login/gpcallback', function(req, res){
+		modules.social.loginCallback("google", req, res);
+	});
 
     app.get('/createOffer', function(req, res) {
         db.createTrip(1, {x: 34, y: 85}, {x: 50, y: 154}, 100, function(err, data){

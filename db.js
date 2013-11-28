@@ -21,9 +21,10 @@ function savePoint(data, callback){
 }
 
 var userSchema = new Schema({
-    socialId : String,
+	social : [{id: String, socialType : Number}],
 	first_name : String,
 	last_name : String,
+	email : String,
 	avatar : String,
 	karma : {type : Number, default : 0},
     location : String,
@@ -64,7 +65,9 @@ exports.get = function(table, filter, callback) {
 }
 
 exports.saveUser = function(userObj, callback) {
-	var newUser = new user(userObj);
+	console.log("we're trying to save user");
+	console.log(userObj);
+	var newUser = new user(userObj);	
 	newUser.save(callback); 
 }
 
@@ -90,7 +93,7 @@ exports.getTrips = function(isDriver, filter, callback){
 }
 
 exports.findOrSaveUser = function(profile, callback){
-    user.findOne({socialId : profile.socialId}, function(err, data){
+    user.findOne({"social.id" : profile.social[0].id}, function(err, data){
         if(err) {
             callback(err);
             return
