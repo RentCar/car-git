@@ -8,11 +8,14 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var connect = require('connect');
 
 var app = express();
 var appPort = parseInt(process.argv.slice(2)) || 3000;
-
+var cookieParser = express.cookieParser('SecretPass')
+  , sessionStore = new connect.middleware.session.MemoryStore();
 var social = require('./social');
+var db = require("./db");
 
 // all environments
 app.set('port', process.env.PORT || CONFIG.appPort);
@@ -24,12 +27,19 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('SecretPass'));
-app.use(express.session({secret: 'car', key: 'user.sid'}));
+
+app.use(express.session({
+    secret: 'SecretPass',
+    key: 'connect.sid',
+    httpOnly: true,
+    store: sessionStore
+  }));
 social.init(app);
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
+
 
 
 // development only
@@ -50,34 +60,31 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  */
 var io = require('socket.io').listen(server);
 
+var SessionSockets = require('session.socket.io')
+  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
+
 var users = {};
 
-io.sockets.on('connection', function (socket) {
-   // console.log(socket)
-//    console.log(socket)
+sessionSockets.on('connection', function (err, socket, session) {
     var testString = "TestString"
     var iter = 0
 
-    console.log(app.session)
     socket.emit("newUser", { hello: socket.store.id});
 
-    socket.on('data', function (data) {
-        console.log(data);
-        setInterval(function() {
-
-            iter++
-            users[socket.store.id] = {
-                //socket : socket.store,
-                user : {
-                    name: "Artem",
-                    test: testString + iter
-                }
-            }
-
-            socket.emit("userData", {data: users[socket.store.id]})
-        }, 5 * 1000)
-    });
     socket.on("driverForm", function(data){
-        console.log(data);
-    })
+	if(!session.passport) {
+		socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
+		return false;
+	}
+		db.createTrip(session.passport.user, 1, {x: 34, y: 85, address: data.data.startpoint}, {x: 50, y: 154, address: data.data.destination}, data.data.price, function(err, trip){
+		if(err) {
+			socket.emit("tripSavingError");		
+		}
+		else {
+			socket.emit("tripSaved", trip);
+		}
+		console.log(err);
+		console.log(trip);
+    })	
+});
 });
