@@ -5,7 +5,7 @@ require.config({
         'angular': 'libs/angular/angular',
         'angular-route': 'libs/angular-route/angular-route',
         'socket.io': '/socket.io/socket.io.js',
-        'googleMaps': 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&key=AIzaSyB1TGYNrikCmxtjmCmkYtG5biJSpuYmHaU',
+        'googleMaps': 'https://maps.googleapis.com/maps/api/js?libraries=geometry,places&sensor=false&key=AIzaSyB1TGYNrikCmxtjmCmkYtG5biJSpuYmHaU',
         'ngAutocomplete': 'modules/ngAutocomplete'
        // 'jquery': 'libs/jquery/jquery'
     },
