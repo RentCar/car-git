@@ -26,7 +26,9 @@ exports.init = function(app, modules){
     });
 
     app.get('/', function(req, res){
-        console.log(req.user);
+        db.getTrips(0, {}, function(err, trips){
+			console.log(trips)
+		})
         db.getTrips(false, {}, function(err, data){
             res.render('index', {
                 result : data,
@@ -54,6 +56,13 @@ exports.init = function(app, modules){
 	});
     app.get('/login/gpcallback', function(req, res){
 		modules.social.loginCallback("google", req, res);
+	});
+
+	app.get('/login/linkedin', function(req, res){
+		modules.social.login("linkedin", req, res, ['r_basicprofile', 'r_emailaddress'])
+	});
+    app.get('/login/linkedinCallback', function(req, res){
+		modules.social.loginCallback("linkedin", req, res);
 	});
 
     app.get('/createOffer', function(req, res) {
