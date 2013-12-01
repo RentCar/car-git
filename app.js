@@ -66,6 +66,7 @@ var SessionSockets = require('session.socket.io')
 var users = {};
 
 sessionSockets.on('connection', function (err, socket, session) {
+	console.log(session);
     var testString = "TestString"
     var iter = 0
 

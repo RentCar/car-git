@@ -1,6 +1,7 @@
 var passport = require('passport'),
     FacebookStrategy = require('passport-facebook').Strategy, 
-	GoogleStrategy = require('passport-google').Strategy;
+	GoogleStrategy = require('passport-google').Strategy,
+	LinkedInStrategy = require('passport-linkedin').Strategy;
 //var pgModel = require('./pgModel');
 var db = require('./db');
 
@@ -20,6 +21,8 @@ passport.use(new FacebookStrategy({
 			socialType : CONSTANTS.FACEBOOK
 		}];
 		db.findOrSaveUser(user, function(err, data){
+			console.log("login callback");
+console.log(data);
 			done(null, data);
 		});
 	}
@@ -39,6 +42,29 @@ passport.use(new GoogleStrategy({
 			socialType : CONSTANTS.GOOGLE
 		}]
 	}
+	db.findOrSaveUser(user, function(err, data){
+		console.log(data);
+		done(null, data);
+	});
+  }
+));
+
+passport.use(new LinkedInStrategy({
+    consumerKey: "775lancq0kyao8",
+    consumerSecret: "RMudCRVJ4Y0oFUtr",
+    callbackURL: "http://94.244.155.77:"+CONFIG.appPort+"/login/linkedinCallback",
+	profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
+  },
+  function(token, tokenSecret, profile, done) {
+	var user = {
+		first_name : profile._json.firstName,	
+		last_name : profile._json.lastName,
+		email : profile._json.emailAddress,
+		social : [{
+			id : profile._json.id,
+			socialType : 3
+		}]
+	};
 	db.findOrSaveUser(user, function(err, data){
 		console.log(data);
 		done(null, data);
