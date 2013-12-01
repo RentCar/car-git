@@ -15,6 +15,7 @@ var appPort = parseInt(process.argv.slice(2)) || 3000;
 var cookieParser = express.cookieParser('SecretPass')
   , sessionStore = new connect.middleware.session.MemoryStore();
 var social = require('./social');
+var db = require("./db");
 
 // all environments
 app.set('port', process.env.PORT || CONFIG.appPort);
@@ -65,40 +66,25 @@ var SessionSockets = require('session.socket.io')
 var users = {};
 
 sessionSockets.on('connection', function (err, socket, session) {
-  //your regular socket.io code goes here
-
-
-console.log("here's the fucking session");
-console.log(err);
-	console.log(session);	
-});
-
-io.sockets.on('connection', function (socket) {
-   // console.log(socket)
-//    console.log(socket)
     var testString = "TestString"
     var iter = 0
 
-    console.log(app.session)
     socket.emit("newUser", { hello: socket.store.id});
 
-    socket.on('data', function (data) {
-        console.log(data);
-        setInterval(function() {
-
-            iter++
-            users[socket.store.id] = {
-                //socket : socket.store,
-                user : {
-                    name: "Artem",
-                    test: testString + iter
-                }
-            }
-
-            socket.emit("userData", {data: users[socket.store.id]})
-        }, 5 * 1000)
-    });
     socket.on("driverForm", function(data){
-        console.log(data);
-    })
+	if(!session.passport) {
+		socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
+		return false;
+	}
+		db.createTrip(session.passport.user, 1, {x: 34, y: 85, address: data.data.startpoint}, {x: 50, y: 154, address: data.data.destination}, data.data.price, function(err, trip){
+		if(err) {
+			socket.emit("tripSavingError");		
+		}
+		else {
+			soclet.emit("tripSaved", trip);
+		}
+		console.log(err);
+		console.log(trip);
+    })	
+});
 });
