@@ -8,10 +8,12 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var connect = require('connect');
 
 var app = express();
 var appPort = parseInt(process.argv.slice(2)) || 3000;
-
+var cookieParser = express.cookieParser('SecretPass')
+  , sessionStore = new connect.middleware.session.MemoryStore();
 var social = require('./social');
 
 // all environments
@@ -24,12 +26,18 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('SecretPass'));
-app.use(express.session());
+app.use(express.session({
+    secret: 'SecretPass',
+    key: 'connect.sid',
+    httpOnly: true,
+    store: sessionStore
+  }));
 social.init(app);
 app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
+
 
 
 // development only
@@ -50,7 +58,19 @@ var server = http.createServer(app).listen(app.get('port'), function(){
  */
 var io = require('socket.io').listen(server);
 
+var SessionSockets = require('session.socket.io')
+  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
+
 var users = {};
+
+sessionSockets.on('connection', function (err, socket, session) {
+  //your regular socket.io code goes here
+
+
+console.log("here's the fucking session");
+console.log(err);
+	console.log(session);	
+});
 
 io.sockets.on('connection', function (socket) {
 //    console.log(socket)
