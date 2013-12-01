@@ -1,6 +1,7 @@
 define([
     'angular',
     'angular-route',
+//    'ngAutocomplete',
     './controllers/index',
     './directives/index',
     './filters/index',
@@ -10,6 +11,7 @@ define([
         'use strict';
     return ng.module('app', [
         'ngRoute',
+//        'ngAutocomplete',
         'app.services',
         'app.filters',
         'app.directives',

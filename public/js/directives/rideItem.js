@@ -2,7 +2,7 @@ define(['./module'], function (directives) {
     'use strict';
 
     console.log("Init Ride tpl")
-    directives.directive('ride-item', function () {
+    directives.directive('rideItem', function () {
         return {
             restrict: 'E',
             transclude: true,
