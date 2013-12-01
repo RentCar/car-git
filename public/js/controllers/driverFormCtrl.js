@@ -10,7 +10,6 @@ define(['./module'], function (controllers) {
 
     $scope.offer = function() {
         console.log($scope.driver)
-        socket.
         socket.emit('driverForm', { data: $scope.driver });
     }
 

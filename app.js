@@ -26,6 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('SecretPass'));
+
 app.use(express.session({
     secret: 'SecretPass',
     key: 'connect.sid',
@@ -73,10 +74,12 @@ console.log(err);
 });
 
 io.sockets.on('connection', function (socket) {
+   // console.log(socket)
 //    console.log(socket)
     var testString = "TestString"
     var iter = 0
 
+    console.log(app.session)
     socket.emit("newUser", { hello: socket.store.id});
 
     socket.on('data', function (data) {
