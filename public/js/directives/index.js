@@ -3,7 +3,8 @@
  */
 
 define([
-    './rideItem'
+    './rideItem',
+    './ngAutocomplete'
 ], function () {
     console.log("Defined all directives")
 });

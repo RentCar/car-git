@@ -2,40 +2,62 @@
  * Created by Artem on 28.11.13.
  */
 
-define(['./module', 'ngAutocomplete'], function (controllers) {
+define(['./module'], function (controllers) {
     'use strict';
 
     console.log("Init DriverForm controller")
 
     controllers.controller('driverFormCtrl', ['$scope', 'socket', function ($scope, socket) {
 
-//    $scope.result1 = '';
-//    $scope.options1 = null;
-//    $scope.details1 = '';
+        $scope.driver = {
+            startpoint: {},
+            destination: {}
+        };
 
+        var location = (function() {
+            var l = {};
+            // default config for autocomplete
+            l.ac = {
+                startpoint : {
+                    result: '',
+                    options: '',
+                    details: ''
+                },
+                destination : {
+                    result: '',
+                    options: '',
+                    details: ''
+                }
+            }
+            // current geolocation
+            function getLocation() {
+                if (navigator.geolocation) {
+                    return navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    console.log("No geolocation, get Chrome")
+                }
+            }
+            function showPosition(position)  {
+                console.log("Latitude: " + position.coords.latitude +
+                    "|| Longitude: " + position.coords.longitude)
+                return(position)
+            }
 
-    $scope.results = '';
+            l.getCurrentPosition = getLocation
+            return l
+        }());
 
-    $scope.result2 = '';
-    $scope.options2 = {
-        country: 'ca',
-        types: '(cities)'
-    };    $scope.details2 = '';
+        $scope.driver.startpoint.ac = location.ac.startpoint;
+        $scope.driver.destination.ac = location.ac.destination;
 
+        $scope.driver.geoposition = location.getCurrentPosition();
 
+        $scope.offer = function() {
 
-//    $scope.result3 = '';
-//    $scope.options3 = {
-//        country: 'gb',
-//        types: 'establishment'
-//    };
-//    $scope.details3 = '';
-
-    $scope.offer = function() {
-        console.log($scope.driver)
-        socket.emit('driverForm', { data: $scope.driver });
-    }
-
+            console.log($scope.driver)
+            socket.emit('driverForm', { data: $scope.driver });
+        }
+        $scope.locateMe = location.getCurrentPosition
 
     }]);
 });
