@@ -81,7 +81,7 @@ sessionSockets.on('connection', function (err, socket, session) {
 			socket.emit("tripSavingError");		
 		}
 		else {
-			soclet.emit("tripSaved", trip);
+			socket.emit("tripSaved", trip);
 		}
 		console.log(err);
 		console.log(trip);
