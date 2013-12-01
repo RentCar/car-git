@@ -77,4 +77,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit("userData", {data: users[socket.store.id]})
         }, 5 * 1000)
     });
+    socket.on("driverForm", function(data){
+        console.log(data);
+    })
 });

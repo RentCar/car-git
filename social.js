@@ -1,7 +1,7 @@
 var passport = require('passport'),
     FacebookStrategy = require('passport-facebook').Strategy, 
 	GoogleStrategy = require('passport-google').Strategy;
-var pgModel = require('./pgModel');
+//var pgModel = require('./pgModel');
 var db = require('./db');
 
 var CONSTANTS = {
