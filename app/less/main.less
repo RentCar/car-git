@@ -1,0 +1,25 @@
+@defaultBG: #16a085;
+@defaultBG2: #1abc9c;
+
+
+@import "_header";
+.rounded-corners(@radius: 5px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+
+body {
+  background-color: @defaultBG2;
+}
+
+#conteiner {
+  .test{
+    .rounded-corners(2px);
+  }
+  p {
+    color: #0f0f0f;
+  }
+
+}
