@@ -40,7 +40,12 @@ app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
 
+var i18n = new (require('i18n-2'))({
+    // setup some locales - other locales default to the first locale
+    locales: ['en', 'de', 'ru', 'ua']
+});
 
+console.log( i18n.__("Hello!") );
 
 // development only
 if ('development' == app.get('env')) {

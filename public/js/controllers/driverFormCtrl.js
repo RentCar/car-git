@@ -28,7 +28,7 @@ define(['./module'], function (controllers) {
                     options: '',
                     details: ''
                 }
-            }
+            };
             // current geolocation
             function getLocation() {
                 if (navigator.geolocation) {
@@ -39,7 +39,7 @@ define(['./module'], function (controllers) {
             }
             function showPosition(position)  {
                 console.log("Latitude: " + position.coords.latitude +
-                    "|| Longitude: " + position.coords.longitude)
+                    "|| Longitude: " + position.coords.longitude);
                 return(position)
             }
 
@@ -53,10 +53,9 @@ define(['./module'], function (controllers) {
         $scope.driver.geoposition = location.getCurrentPosition();
 
         $scope.offer = function() {
-
-            console.log($scope.driver)
-            socket.emit('driverForm', { data: $scope.driver });
-        }
+            console.log($scope.driver);
+            socket.emit('driverForm', $scope.driver);
+        };
         $scope.locateMe = location.getCurrentPosition
 
     }]);
