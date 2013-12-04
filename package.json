@@ -21,6 +21,7 @@
     "connect": ">=0",
     "cookie": ">=0",
     "session.socket.io": ">=0",
-	"passport-linkedin": ">=0"
+	"passport-linkedin": ">=0",
+	"passport-vkontakte": ">=0"
   }
 }

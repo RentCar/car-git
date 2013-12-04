@@ -66,26 +66,21 @@ var SessionSockets = require('session.socket.io')
 var users = {};
 
 sessionSockets.on('connection', function (err, socket, session) {
-	console.log(session);
-    var testString = "TestString"
-    var iter = 0
-
-    socket.emit("newUser", { hello: socket.store.id});
-
-    socket.on("driverForm", function(data){
+	socket.emit("newUser", { hello: socket.store.id});
+	socket.on("driverForm", function(data){
+		console.log(data);
+		return false;
 		if(!session.passport) {
 			socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
 			return false;
 		}
-			db.createTrip(session.passport.user, 1, {x: 34, y: 85, address: data.data.startpoint}, {x: 50, y: 154, address: data.data.destination}, data.data.price, function(err, trip){
+		db.createTrip(session.passport.user, 1, {x: 34, y: 85, address: data.data.startpoint}, {x: 50, y: 154, address: data.data.destination}, data.data.price, function(err, trip){
 			if(err) {
 				socket.emit("tripSavingError");		
 			}
 			else {
 				socket.emit("tripSaved", trip);
 			}
-			console.log(err);
-			console.log(trip);
 		})	
 	});
 });
