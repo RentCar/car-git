@@ -64,6 +64,12 @@ exports.init = function(app, modules){
     app.get('/login/linkedinCallback', function(req, res){
 		modules.social.loginCallback("linkedin", req, res);
 	});
+	app.get('/login/vk', function(req, res){
+		modules.social.login("vkontakte", req, res)
+	});
+    app.get('/login/vkCallback', function(req, res){
+		modules.social.loginCallback("vkontakte", req, res);
+	});
 
     app.get('/createOffer', function(req, res) {
         db.createTrip(req.user, 1, {x: 34, y: 85}, {x: 50, y: 154}, 100, function(err, data){

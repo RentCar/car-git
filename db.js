@@ -2,16 +2,16 @@ var MongoClient = require('mongodb').MongoClient;
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 DB = {
-    addr : 'localhost',
-    port : '27017',
-    name : 'test'
+	addr : 'localhost',
+	port : '27017',
+	name : 'test'
 }
 mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
 var pointSchema = new Schema({
 	x : Number,
 	y : Number,
-    country : String,
-    city : String,
+	country : String,
+	city : String,
 	address : String,
 	comment : String
 });
@@ -29,9 +29,10 @@ var userSchema = new Schema({
 	email : String,
 	avatar : String,
 	karma : {type : Number, default : 0},
-    location : String,
-    gender : Boolean,
-    timezone : Number
+	location : String,
+	gender : Boolean,
+	timezone : Number,
+	photo : String
 });
 var user = mongoose.model('user', userSchema);
 
@@ -73,20 +74,20 @@ exports.saveUser = function(userObj, callback) {
 }
 
 exports.createTrip = function(user, isDriver, from, to, price, callback){
-        if(!user) {
-            callback("user is not authifacated");
-            return false;
-        }
-		savePoint(from, function(err, dataFrom){
-			if(!err){
-				savePoint(to, function(err, dataTo){				
-					if(!err){
-						saveTrip((isDriver ? user._id : null), (!isDriver ? user._id : null), dataFrom._id, dataTo._id, price,
-						callback);
-					}
-				})
-			}
-		})
+	if(!user) {
+		callback("user is not authifacated");
+		return false;
+	}
+	savePoint(from, function(err, dataFrom){
+		if(!err){
+			savePoint(to, function(err, dataTo){
+				if(!err){
+					saveTrip((isDriver ? user._id : null), (!isDriver ? user._id : null), dataFrom._id, dataTo._id, price,
+					callback);
+				}
+			})
+		}
+	})
 }
 
 exports.getTrips = function(isDriver, filter, callback){
@@ -96,16 +97,16 @@ exports.getTrips = function(isDriver, filter, callback){
 }
 
 exports.findOrSaveUser = function(profile, callback){
-    user.findOne({"social.id" : profile.social[0].id}, function(err, data){
-        if(err) {
-            callback(err);
-            return
-        }
-        if(data) {
-            callback(null, data);
-        }
-        else{
-          exports.saveUser(profile, callback);
-        }
-    })
+	user.findOne({"social.id" : profile.social[0].id}, function(err, data){
+		if(err) {
+			callback(err);
+			return
+		}
+		if(data) {
+			callback(null, data);
+		}
+		else{
+			exports.saveUser(profile, callback);
+		}
+	})
 }
