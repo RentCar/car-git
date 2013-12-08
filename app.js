@@ -44,7 +44,6 @@ var i18n = new (require('i18n-2'))({
     // setup some locales - other locales default to the first locale
     locales: ['en', 'de', 'ru', 'ua']
 });
-//i18n.expressBind();
 
 console.log( i18n.__("Hello!") );
 
@@ -75,14 +74,14 @@ sessionSockets.on('connection', function (err, socket, session) {
 	socket.emit("newUser", { hello: socket.store.id});
 	socket.on("driverForm", function(data){
 		console.log(data);
-		return false;
+		//return false;
 		if(!session.passport) {
 			socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
 			return false;
 		}
-		db.createTrip(session.passport.user, 1, {x: 34, y: 85, address: data.data.startpoint}, {x: 50, y: 154, address: data.data.destination}, data.data.price, function(err, trip){
+		db.createTrip(session.passport.user, 1, {x: data.startpoint.geopoints.x, y: data.startpoint.geopoints.y, address: data.startpoint.address}, {x: data.destination.geopoints.x, y: data.destination.geopoints.y, address: data.destination.address}, data.price, function(err, trip){
 			if(err) {
-				socket.emit("tripSavingError");		
+				socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
 			}
 			else {
 				socket.emit("tripSaved", trip);

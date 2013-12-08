@@ -75,7 +75,9 @@ define(['./module'], function (controllers) {
                         x: $scope.driver.destination.ac.details.geometry.location[googleCoordSymbol+ "b"],
                         y: $scope.driver.destination.ac.details.geometry.location.pb
                     }
-                }
+                },
+				price: $scope.driver.price,
+				date : $scope.driver.date
             });
         };
         $scope.locateMe = location.getCurrentPosition

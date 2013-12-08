@@ -72,15 +72,15 @@ passport.use(new LinkedInStrategy({
 ));
 
 passport.use(new VKontakteStrategy({
-    clientID:     "4038457", 
-    clientSecret: "nRhenXgKWC4rN1rBAwci",
-    callbackURL:  "http://94.244.155.77:"+CONFIG.appPort+"/login/vkCallback"
-  },
-  function(accessToken, refreshToken, profile, done) {
+	clientID:     "4038457", 
+	clientSecret: "nRhenXgKWC4rN1rBAwci",
+	callbackURL:  "http://94.244.155.77:"+CONFIG.appPort+"/login/vkCallback"
+	},
+	function(accessToken, refreshToken, profile, done) {
 	var user = profile._json;
 		user.social = [{
 			id : profile.id,
-			socialType : CONSTANTS.VK			
+			socialType : CONSTANTS.VK
 		}];
 		db.findOrSaveUser(user, function(err, data){
 			done(null, data);

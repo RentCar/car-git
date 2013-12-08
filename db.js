@@ -46,7 +46,7 @@ var tripSchema =  new Schema ({
 	pPrice : Number
 });
 var trip = mongoose.model('trip', tripSchema);
-function saveTrip(dId, pIp, fromId, toId, price, callback){	
+function saveTrip(dId, pIp, fromId, toId, price, callback){
 	var tripObj = {};
 	if(fromId) tripObj.from = fromId;
 	if(toId) tripObj.to = toId;
