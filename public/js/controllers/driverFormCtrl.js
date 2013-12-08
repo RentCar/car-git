@@ -53,14 +53,18 @@ define(['./module'], function (controllers) {
         $scope.driver.geoposition = location.getCurrentPosition();
 
         $scope.offer = function() {
-            console.log($scope.driver);
+
+            // TODO:
+            // hotfix for google coords
+            var googleCoordSymbol = $scope.driver.startpoint.ac.details.geometry.location.constructor.name.toLocaleLowerCase();
+            //console.log($scope.driver.startpoint.ac.details.geometry.location);
             socket.emit('driverForm', {
                 geoposition: $scope.driver.geoposition || {x:0, y:0},
                 startpoint: {
                     origin: $scope.driver.startpoint.origin,
                     address: $scope.driver.startpoint.ac.result,
                     geopoints: {
-                        x: $scope.driver.startpoint.ac.details.geometry.location.ob,
+                        x: $scope.driver.startpoint.ac.details.geometry.location[googleCoordSymbol+ "b"],
                         y: $scope.driver.startpoint.ac.details.geometry.location.pb
                     }
                 },
@@ -68,7 +72,7 @@ define(['./module'], function (controllers) {
                     origin: $scope.driver.destination.origin,
                     address: $scope.driver.destination.ac.result,
                     geopoints: {
-                        x: $scope.driver.destination.ac.details.geometry.location.ob,
+                        x: $scope.driver.destination.ac.details.geometry.location[googleCoordSymbol+ "b"],
                         y: $scope.driver.destination.ac.details.geometry.location.pb
                     }
                 }
