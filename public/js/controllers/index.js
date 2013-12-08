@@ -1,6 +1,6 @@
 define([
     './userCtrl',
-    './elseCtrl',
+    './passengerFormCtrl',
     './socketsCtrl',
     './driverFormCtrl'
 ], function () {
