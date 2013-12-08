@@ -44,6 +44,7 @@ var i18n = new (require('i18n-2'))({
     // setup some locales - other locales default to the first locale
     locales: ['en', 'de', 'ru', 'ua']
 });
+//i18n.expressBind();
 
 console.log( i18n.__("Hello!") );
 

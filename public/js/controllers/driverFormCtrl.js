@@ -54,7 +54,25 @@ define(['./module'], function (controllers) {
 
         $scope.offer = function() {
             console.log($scope.driver);
-            socket.emit('driverForm', $scope.driver);
+            socket.emit('driverForm', {
+                geoposition: $scope.driver.geoposition || {x:0, y:0},
+                startpoint: {
+                    origin: $scope.driver.startpoint.origin,
+                    address: $scope.driver.startpoint.ac.result,
+                    geopoints: {
+                        x: $scope.driver.startpoint.ac.details.geometry.location.ob,
+                        y: $scope.driver.startpoint.ac.details.geometry.location.pb
+                    }
+                },
+                destination: {
+                    origin: $scope.driver.destination.origin,
+                    address: $scope.driver.destination.ac.result,
+                    geopoints: {
+                        x: $scope.driver.destination.ac.details.geometry.location.ob,
+                        y: $scope.driver.destination.ac.details.geometry.location.pb
+                    }
+                }
+            });
         };
         $scope.locateMe = location.getCurrentPosition
 
