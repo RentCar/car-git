@@ -32,12 +32,6 @@ exports.init = function(app, modules){
 		});
 	});
 
-	app.get('/login', function(profile, callback){
-		db.saveUser({firstName : profile.first_name, lastName : profile.last_name}, function(err, data){
-			callback(err, data)
-		})
-	});
-	
     app.get('/login/fb', function(req, res){
 		modules.social.login("facebook", req, res, ["email"]);
 	});
@@ -63,12 +57,5 @@ exports.init = function(app, modules){
 	});
     app.get('/login/vkCallback', function(req, res){
 		modules.social.loginCallback("vkontakte", req, res);
-	});
-
-	app.get('/createOffer', function(req, res) {
-		db.createTrip(req.user, 1, {x: 34, y: 85}, {x: 50, y: 154}, 100, function(err, data){
-			console.log(err);
-			res.render('tripCreatedMessage', data);
-		})
 	});
 }
