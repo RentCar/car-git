@@ -43,12 +43,22 @@ define(['./module'], function (controllers) {
 //                    date: '1386527792982'
 //                });
 
+        // debug fx
         $scope.logTrips = function() {
             console.log($scope.trips);
         }
+
+        // Loading all trips for current user
         socket.on("onReceiveTrips", function(data) {
             $scope.$apply(function () {
                 $scope.trips = data
+            });
+        });
+
+        // Adding new trips in live
+        socket.on("onNewTrip", function(data) {
+            $scope.$apply(function () {
+                $scope.trips.push(data)
             });
         })
     }]);
