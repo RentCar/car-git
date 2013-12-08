@@ -5,14 +5,18 @@ var db = require("./../db");
 
 exports.init = function(app, modules){
 	/**
-		* Angular tests
-		*/
+    * Angular templates
+    */
 	app.get('/userBlock', function(req, res) {
 		res.render('partials/userBlock');
 	})
 	app.get('/driverForm', function(req, res) {
 		res.render('partials/driverForm');
 	})
+    app.get('/passengerForm', function(req, res) {
+		res.render('partials/passengerForm');
+	})
+
 	app.get('/sockets', function(req, res) {
 		res.render('sockets-test')
 	});

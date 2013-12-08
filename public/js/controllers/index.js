@@ -1,8 +1,9 @@
 define([
     './userCtrl',
-    './elseCtrl',
+    './passengerFormCtrl',
     './socketsCtrl',
-    './driverFormCtrl'
+    './driverFormCtrl',
+    './searchResultsCtrl'
 ], function () {
     console.log("Defined all controllers")
 });

@@ -4,7 +4,8 @@
  */
 
 define([
-    './socketsFactory'
+    './socketsFactory',
+    './geolocationFactory'
     // Constant
     // Value
     // Service
