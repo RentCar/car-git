@@ -27,8 +27,11 @@
 
         </div>
         <div class="col-xs-12 col-md-6">
-            <h2>[Results in future]</h2>
-            <ride-item></ride-item>
+            <h2>[Results]</h2>
+            <div ng-controller="searchResultsCtrl">
+                <button ng-click="logTrips()"></button>
+                <ride-item ng-repeat="trip in trips"></ride-item>
+            </div>
 
         </div>
     </div>
