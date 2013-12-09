@@ -58,7 +58,7 @@ define(['./module'], function (controllers) {
         // Adding new trips in live
         socket.on("onNewTrip", function(data) {
             $scope.$apply(function () {
-                $scope.trips.push(data)
+                $scope.trips.unshift(data)
             });
         })
     }]);

@@ -38,8 +38,7 @@ var user = mongoose.model('user', userSchema);
 
 var tripSchema =  new Schema ({
     date: { type: String, default: (new Date()).getTime() },
-	from : {type : Schema.Types.ObjectId, ref : 'point'},
-	to : {type : Schema.Types.ObjectId, ref : 'point'},
+	points : [{type : Schema.Types.ObjectId, ref : 'point'}],
 	driver : {type : Schema.Types.ObjectId, ref : 'user'},
 	passenger : {type : Schema.Types.ObjectId, ref : 'user'},
 	dPrice : Number,
@@ -48,8 +47,8 @@ var tripSchema =  new Schema ({
 var trip = mongoose.model('trip', tripSchema);
 function saveTrip(dId, pIp, fromId, toId, price, callback){
 	var tripObj = {};
-	if(fromId) tripObj.from = fromId;
-	if(toId) tripObj.to = toId;
+	tripObj.points = [fromId];
+	if(toId) tripObj.points.push(toId);
 	if(dId) {
 		tripObj.driver = dId;
 		tripObj.dPrice = price
@@ -83,7 +82,17 @@ exports.createTrip = function(user, isDriver, from, to, price, callback){
 			savePoint(to, function(err, dataTo){
 				if(!err){
 					saveTrip((isDriver ? user._id : null), (!isDriver ? user._id : null), dataFrom._id, dataTo._id, price,
-					callback);
+					function(err, trip){
+						if(err){
+							callback(err);
+						}
+						else {
+							trip.from = dataFrom;
+							trip.to = dataTo;
+							trip[isDriver ? "driver" : "passenger"] = user;
+							callback(null, trip)
+						}
+					});
 				}
 			})
 		}
@@ -93,7 +102,7 @@ exports.createTrip = function(user, isDriver, from, to, price, callback){
 exports.getTrips = function(isDriver, filter, callback){
 	filter = filter || {};
 	filter[isDriver ? "passenger" :"driver"] = {$exists : true};
-	trip.find(filter).populate(isDriver ? "passenger" :"driver").populate("from").populate("to").exec(callback);
+	trip.find(filter).populate(isDriver ? "passenger" :"driver").populate("points").exec(callback);
 }
 
 exports.findOrSaveUser = function(profile, callback){
