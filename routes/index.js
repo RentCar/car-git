@@ -44,14 +44,14 @@ exports.init = function(app, modules){
 	});
 	
 	app.get('/login/gp', function(req, res){
-		modules.social.login("google", req, res, ["https://www.googleapis.com/auth/plus.login"])
+		modules.social.login("google", req, res)
 	});
     app.get('/login/gpcallback', function(req, res){
 		modules.social.loginCallback("google", req, res);
 	});
 
 	app.get('/login/linkedin', function(req, res){
-		modules.social.login("linkedin", req, res, ['r_basicprofile', 'r_emailaddress'])
+		modules.social.login("linkedin", req, res)
 	});
     app.get('/login/linkedinCallback', function(req, res){
 		modules.social.loginCallback("linkedin", req, res);

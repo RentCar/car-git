@@ -76,17 +76,19 @@ sessionSockets.on('connection', function (err, socket, session) {
 			console.log(err);
 		}
 		else{
-		//	console.log(trips);
+		//	console.log(trips); 
 			socket.emit("onReceiveTrips", trips);
 		}
 	});
 	socket.emit("newUser", { hello: socket.store.id});
 	socket.on("driverForm", function(data){
+		/*console.log(data);
+		return false;*/
 		if(!session.passport) {
 			socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
 			return false;
 		}
-		db.createTrip(session.passport.user, 1, {x: data.startpoint.geopoints.x, y: data.startpoint.geopoints.y, address: data.startpoint.address}, {x: data.destination.geopoints.x, y: data.destination.geopoints.y, address: data.destination.address}, data.price, function(err, trip){
+		db.createTrip(session.passport.user, 1, {lat: data.startpoint.geopoints.lat, lng: data.startpoint.geopoints.lng, address: data.startpoint.address}, {lat: data.destination.geopoints.lat, lng: data.destination.geopoints.lng, address: data.destination.address}, data.price, function(err, trip){
 			if(err) {
 				socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
 			}

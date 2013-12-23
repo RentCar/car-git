@@ -8,8 +8,8 @@ DB = {
 }
 mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
 var pointSchema = new Schema({
-	x : Number,
-	y : Number,
+	lat : Number,
+	lng : Number,
 	country : String,
 	city : String,
 	address : String,
@@ -87,9 +87,9 @@ exports.createTrip = function(user, isDriver, from, to, price, callback){
 							callback(err);
 						}
 						else {
-							trip.from = dataFrom;
-							trip.to = dataTo;
-							trip[isDriver ? "driver" : "passenger"] = user;
+							//trip.points = [dataFrom, dataTo];
+							//trip[isDriver ? "driver" : "passenger"] = user;
+							console.log(dataTo);
 							callback(null, trip)
 						}
 					});

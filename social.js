@@ -7,11 +7,15 @@ var passport = require('passport'),
 var db = require('./db');
 
 var CONSTANTS = {
-	FACEBOOK : 1,
-	GOOGLE : 2,
-	LINKEDIN : 3,
-	VK : 4
-}
+		FACEBOOK : 1,
+		GOOGLE : 2,
+		LINKEDIN : 3,
+		VK : 4
+	},
+	socialScopes = {
+		facebook : ["email"],
+		linkedin : ['r_basicprofile', 'r_emailaddress']
+	}
 passport.use(new FacebookStrategy({
 		clientID: "543776059050441",
 		clientSecret: "c561992ef2ab4c9b3e0c8d8ea03a9ef4",
@@ -19,11 +23,15 @@ passport.use(new FacebookStrategy({
 	},
 	function(accessToken, refreshToken, profile, done) {
 		var user = profile._json;
+		user.photo = "https://graph.facebook.com/"+profile.id+"/picture?type=large";
 		user.social = [{
 			id : profile.id,
-			socialType : CONSTANTS.FACEBOOK			
+			socialType : CONSTANTS.FACEBOOK
 		}];
+		console.log("aaaaaaaaaaaaaaaaaaaaaaaa");
+		console.log(arguments);
 		db.findOrSaveUser(user, function(err, data){
+			console.log("pam-param========================================================================");
 			done(null, data);
 		});
 	}
@@ -82,6 +90,7 @@ passport.use(new VKontakteStrategy({
 			id : profile.id,
 			socialType : CONSTANTS.VK
 		}];
+		console.log(arguments);
 		db.findOrSaveUser(user, function(err, data){
 			done(null, data);
 		});
@@ -99,12 +108,17 @@ exports.init = function(app) {
 	});
 }
 
-exports.login = function(sn, req, res, scope){
+exports.login = function(sn, req, res){
 	//sn means social network
-	passport.authenticate(sn, {scope: scope || []})(req, res);
+	passport.authenticate(sn, {scope: socialScopes[sn] || []})(req, res);
 }
 exports.loginCallback = function(sn, req, res){
-	passport.authenticate(sn, { successRedirect: '/',
+	var a = passport.authenticate(sn, { successRedirect: '/',
 		failureRedirect: '/login' 
-	})(req, res)
+	});
+	console.log(a);
+	a(req, res);
+	/*passport.authenticate(sn, { successRedirect: '/',
+		failureRedirect: '/login' 
+	})(req, res)*/
 }
