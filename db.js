@@ -7,106 +7,100 @@ DB = {
 	name : 'test'
 }
 mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
-var pointSchema = new Schema({
-	lat : Number,
-	lng : Number,
-	country : String,
-	city : String,
-	address : String,
-	comment : String
-});
-var point = mongoose.model('point', pointSchema);
 
-function savePoint(data, callback){
-	var newPoint = new point(data);
-	newPoint.save(callback)
-}
-
-var userSchema = new Schema({
-	social : [{id: String, socialType : Number}],
-	first_name : String,
-	last_name : String,
-	email : String,
-	avatar : String,
-	karma : {type : Number, default : 0},
-	location : String,
-	gender : Boolean,
-	timezone : Number,
-	photo : String
-});
-var user = mongoose.model('user', userSchema);
-
-var tripSchema =  new Schema ({
-    date: { type: String, default: (new Date()).getTime() },
-	points : [{type : Schema.Types.ObjectId, ref : 'point'}],
-	driver : {type : Schema.Types.ObjectId, ref : 'user'},
-	passenger : {type : Schema.Types.ObjectId, ref : 'user'},
-	dPrice : Number,
-	pPrice : Number
-});
-var trip = mongoose.model('trip', tripSchema);
-function saveTrip(dId, pIp, fromId, toId, price, callback){
-	var tripObj = {};
-	tripObj.points = [fromId];
-	if(toId) tripObj.points.push(toId);
-	if(dId) {
-		tripObj.driver = dId;
-		tripObj.dPrice = price
-	} 
-	else {
-		tripObj.passenger = pIp;
-		tripObj.pPrice = price
-	}
-	newTrip = new trip(tripObj);
-	newTrip.save(callback);
-};
-
-exports.get = function(table, filter, callback) {
-	var db = mongoConnect(function(db){
-		db.collection(table).find(filter).toArray(callback);
-	});	
-}
+var userModel = mongoose.model('user', new Schema({    //models definition
+		social : [{id: String, socialType : Number}],
+		first_name : String,
+		last_name : String,
+		email : String,
+		avatar : String,
+		karma : {type : Number, default : 0},
+		location : String,
+		gender : Boolean,
+		timezone : Number,
+		photo : String,
+		points : [{
+			alias : String, 
+			point:{type : Schema.Types.ObjectId, ref : 'point'}
+		}],
+		routes : [{
+			alias : String,
+			route : {type : Schema.Types.ObjectId, ref : 'route'}
+		}]
+	})),
+	pointModel = mongoose.model('point', new Schema({
+		lat : Number,
+		lng : Number,
+		country : String,
+		city : String,
+		address : String
+	})),
+	routeModel = mongoose.model('route', new Schema({
+		points : [{type : Schema.Types.ObjectId, ref : 'point'}]
+	})),
+	tripModel = mongoose.model('trip', new Schema ({
+		date: {type: String, default: (new Date()).getTime()},
+		route : {type : Schema.Types.ObjectId, ref : 'route'},
+		users : [{type : Schema.Types.ObjectId, ref : 'user'}], //0 - driver, anyone else is passanger
+		startPrice : Number,
+		finalPrice : Number,
+		status : {type: Number, default: 0}, // 0 - not started, 1 - in progress, 2 - completed
+		responses : [{
+			user : {type : Schema.Types.ObjectId, ref : 'user'}, 
+			price : Number, 
+			message : String,
+			route : {type : Schema.Types.ObjectId, ref : 'route'}
+		}]
+	})),
+	ScheduleModel = mongoose.model('schedule', new Schema({
+		startDate : {type: String, default: (new Date()).getTime()},
+		finishDate : String,
+		weeklySchedule : {type : Number, defult : 127}, //Math.floor(35 / Math.pow(2, 0)) % 2
+		user : {role : Boolean, id : {type : Schema.Types.ObjectId, ref : 'user'}},
+		route : {type : Schema.Types.ObjectId, ref : 'route'},
+		time : Number,
+		trips : [{type : Schema.Types.ObjectId, ref : 'trip'}]
+	}));
 
 exports.saveUser = function(userObj, callback) {
-	var newUser = new user(userObj);	
+	var newUser = new userModel(userObj);
 	newUser.save(callback); 
 }
 
-exports.createTrip = function(user, isDriver, from, to, price, callback){
+exports.createOrder = function(user, points, price, date, callback){
 	if(!user) {
 		callback("user is not authifacated");
 		return false;
 	}
-	savePoint(from, function(err, dataFrom){
-		if(!err){
-			savePoint(to, function(err, dataTo){
-				if(!err){
-					saveTrip((isDriver ? user._id : null), (!isDriver ? user._id : null), dataFrom._id, dataTo._id, price,
-					function(err, trip){
-						if(err){
-							callback(err);
-						}
-						else {
-							//trip.points = [dataFrom, dataTo];
-							//trip[isDriver ? "driver" : "passenger"] = user;
-							console.log(dataTo);
-							callback(null, trip)
-						}
-					});
-				}
-			})
+	pointModel.create(points, funciton(err){
+		if(err){
+			callback(err); 
+			return;
 		}
+		var newRoute = new routeModel(points:[arguments[1], arguments[2]]);
+		newRoute.save(function(err, route){
+			if(err){
+				callback(err); 
+				return;
+			}
+			var newOrder = new tripModel({
+				roure : route,
+				users : [null, user],
+				startPrice : price,
+				date : date
+			});
+			newOrder.save(callback);
+		});
 	})
 }
 
-exports.getTrips = function(isDriver, filter, callback){
+exports.getOrders = function(isDriver, filter, callback){
 	filter = filter || {};
-	filter[isDriver ? "passenger" :"driver"] = {$exists : true};
-	trip.find(filter).populate(isDriver ? "passenger" :"driver").populate("points").exec(callback);
+	tripModel.find(filter).populate(users).populate("route").exec(callback);
 }
 
 exports.findOrSaveUser = function(profile, callback){
-	user.findOne({"social.id" : profile.social[0].id}, function(err, data){
+	userModel.findOne({"social.id" : profile.social[0].id}, function(err, data){
 		if(err) {
 			callback(err);
 			return
