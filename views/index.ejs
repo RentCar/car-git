@@ -10,6 +10,7 @@
 <header class="navbar navbar-default navbar-static-top" role="navigation">
     <%- include header%>
 </header>
+
     <!-- Begin page content -->
 <div class="container">
     <!--<div class="page-header">-->
@@ -19,9 +20,6 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <h2>[Search]</h2>
-
-            <a class="btn btn-success btn-lg" href="#/passengerForm">passengerForm</a>
-            <a class="btn btn-info btn-lg" href="#/driverForm">driverForm</a>
 
             <div data-ng-view></div>
 
@@ -37,12 +35,6 @@
     </div>
 
 </div>
-
-
-<script type=text/ng-template id=test2.html>
-    <!-- Settings -->
-    <p>Settings go here ...</p>
-</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&key=AIzaSyB1TGYNrikCmxtjmCmkYtG5biJSpuYmHaU"></script>
 <script src="/js/libs/requirejs/require.js" data-main="js/main.js"></script>

@@ -1,4 +1,26 @@
 header {
-  opacity: .5;
+//  opacity: .5;
   padding: 30px;
+  #main-menu {
+    li:hover {
+      -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.1)));
+    }
+  }
+
+  #user-status {
+    padding: 0;
+    margin: 0;
+    #user-avatar {
+      height: 55px;
+      width:  55px;
+    }
+    #user-avatar:hover {
+      position: absolute;
+
+      /*Transition*/
+      -webkit-transition: all 0.5s ease;
+      -moz-transition: all 0.5s ease;
+      -o-transition: all 0.5s ease;
+    }
+  }
 }

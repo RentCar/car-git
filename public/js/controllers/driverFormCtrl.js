@@ -14,7 +14,7 @@ define(['./module'], function (controllers) {
             destination: {}
         };
 
-        var location = (function() {
+        var userLocation = (function() {
             var l = {};
             // default config for autocomplete
             l.ac = {
@@ -47,10 +47,10 @@ define(['./module'], function (controllers) {
             return l
         }());
 
-        $scope.driver.startpoint.ac = location.ac.startpoint;
-        $scope.driver.destination.ac = location.ac.destination;
+        $scope.driver.startpoint.ac = userLocation.ac.startpoint;
+        $scope.driver.destination.ac = userLocation.ac.destination;
 
-        $scope.driver.geoposition = location.getCurrentPosition();
+        $scope.driver.geoposition = userLocation.getCurrentPosition();
 
         $scope.offer = function() {
             socket.emit('driverForm', {
@@ -59,16 +59,16 @@ define(['./module'], function (controllers) {
 					origin: $scope.driver.startpoint.origin,
 					address: $scope.driver.startpoint.ac.result,
 					geopoints: {
-						lat : $scope.driver.startpoint.ac.details.geometry.location.lat(),
-						lng : $scope.driver.startpoint.ac.details.geometry.location.lng()
+						lat : $scope.driver.startpoint.ac.details.geometry.userLocation.lat(),
+						lng : $scope.driver.startpoint.ac.details.geometry.userLocation.lng()
 					}
 				},
 				{
                     origin: $scope.driver.destination.origin,
                     address: $scope.driver.destination.ac.result,
                     geopoints: {
-						lat : $scope.driver.destination.ac.details.geometry.location.lat(),
-						lng : $scope.driver.destination.ac.details.geometry.location.lng()
+						lat : $scope.driver.destination.ac.details.geometry.userLocation.lat(),
+						lng : $scope.driver.destination.ac.details.geometry.userLocation.lng()
 					}
    
                 }],
@@ -76,7 +76,7 @@ define(['./module'], function (controllers) {
 				date : $scope.driver.date
             });
         };
-        $scope.locateMe = location.getCurrentPosition
+        $scope.locateMe = userLocation.getCurrentPosition
 
     }]);
 });

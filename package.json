@@ -17,6 +17,7 @@
     "passport": ">= 0",
     "passport-facebook": ">=0",
     "passport-google": ">=0",
+    "passport-google-oauth": ">=0",
     "pg": ">= 0",
     "connect": ">=0",
     "cookie": ">=0",
