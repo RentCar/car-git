@@ -21,7 +21,7 @@ exports.init = function(app, modules){
 			res.render('index', {
 				err: err,
 				orders : data,
-				user : req.session.passport.user,
+				user : req.session.passport && req.session.passport.user,
 				title: 'Destination.to'
 			});
 		});
