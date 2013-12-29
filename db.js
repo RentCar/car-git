@@ -72,20 +72,20 @@ exports.createOrder = function(user, points, price, date, callback){
 		callback("user is not authifacated");
 		return false;
 	}
-	pointModel.create(points, funciton(err){
+	pointModel.create(points, function(err){
 		if(err){
 			callback(err); 
 			return;
 		}
-		var newRoute = new routeModel(points:[arguments[1], arguments[2]]);
+		var newRoute = new routeModel({points:[arguments[1], arguments[2]]});
 		newRoute.save(function(err, route){
 			if(err){
 				callback(err); 
 				return;
 			}
 			var newOrder = new tripModel({
-				roure : route,
-				users : [null, user],
+				route : route,
+				users : [null, user._id],
 				startPrice : price,
 				date : date
 			});
@@ -94,9 +94,14 @@ exports.createOrder = function(user, points, price, date, callback){
 	})
 }
 
-exports.getOrders = function(isDriver, filter, callback){
+exports.getOrders = function(filter, callback){
 	filter = filter || {};
-	tripModel.find(filter).populate(users).populate("route").exec(callback);
+	tripModel.find(filter).populate("users").populate("route").exec(function(err, data){
+		routeModel.populate(data, {
+			path: 'route.points',
+			model: pointModel
+		}, callback);
+	})
 }
 
 exports.findOrSaveUser = function(profile, callback){

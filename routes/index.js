@@ -21,13 +21,14 @@ exports.init = function(app, modules){
 		res.render('sockets-test')
 	});
 	app.get('/driver', function(req, res){
-		db.getTrips(true, {}, function(err, data){
-			res.render('index', {result : data, RequestedUserType : "passenger"});
-		});
+		//db.getOrders({}, function(err, data){
+			res.render('index', {result : [], RequestedUserType : "passenger"});
+	//	});
 	});
 
 	app.get('/', function(req, res){
-		db.getTrips(false, {}, function(err, data){
+		db.getOrders({}, function(err, data){
+			console.log(data);
 			res.render('index', {
 				result : data,
 				RequestedUserType : "driver",

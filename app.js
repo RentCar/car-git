@@ -15,7 +15,6 @@ var appPort = parseInt(process.argv.slice(2)) || 3000;
 var cookieParser = express.cookieParser('SecretPass')
   , sessionStore = new connect.middleware.session.MemoryStore();
 var social = require('./social');
-var db = require("./db");
 
 // all environments
 app.set('port', process.env.PORT || CONFIG.appPort);
@@ -45,8 +44,6 @@ var i18n = new (require('i18n-2'))({
     locales: ['en', 'de', 'ru', 'ua']
 });
 
-console.log( i18n.__("Hello!") );
-
 // development only
 if ('development' == app.get('env')) {
     app.use(express.errorHandler());
@@ -59,43 +56,6 @@ var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
 
-/**
- * Sockets part TODO: move to controller
- * @type {*}
- */
-var io = require('socket.io').listen(server);
+var socket = require("./socket.js");
 
-var SessionSockets = require('session.socket.io')
-  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
-
-var users = {};
-
-sessionSockets.on('connection', function (err, socket, session) {
-	db.getTrips(0, {}, function(err, trips){
-		if(err){
-			console.log(err);
-		}
-		else{
-		//	console.log(trips); 
-			socket.emit("onReceiveTrips", trips);
-		}
-	});
-	socket.emit("newUser", { hello: socket.store.id});
-	socket.on("driverForm", function(data){
-		/*console.log(data);
-		return false;*/
-		if(!session.passport) {
-			socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
-			return false;
-		}
-		db.createTrip(session.passport.user, 1, {lat: data.startpoint.geopoints.lat, lng: data.startpoint.geopoints.lng, address: data.startpoint.address}, {lat: data.destination.geopoints.lat, lng: data.destination.geopoints.lng, address: data.destination.address}, data.price, function(err, trip){
-			if(err) {
-				socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
-			}
-			else {
-				socket.broadcast.emit("onNewTrip", trip);
-				socket.emit("tripSaved", trip);
-			}
-		})	
-	});
-});
+socket.init(server, sessionStore, cookieParser);

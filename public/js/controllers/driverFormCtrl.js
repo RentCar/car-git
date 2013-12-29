@@ -55,15 +55,15 @@ define(['./module'], function (controllers) {
         $scope.offer = function() {
             socket.emit('driverForm', {
                 geoposition: $scope.driver.geoposition || {x:0, y:0},
-                startpoint: {
-                    origin: $scope.driver.startpoint.origin,
-                    address: $scope.driver.startpoint.ac.result,
-                    geopoints: {
+                points :[{
+					origin: $scope.driver.startpoint.origin,
+					address: $scope.driver.startpoint.ac.result,
+					geopoints: {
 						lat : $scope.driver.startpoint.ac.details.geometry.location.lat(),
 						lng : $scope.driver.startpoint.ac.details.geometry.location.lng()
 					}
-                },
-                destination: {
+				},
+				{
                     origin: $scope.driver.destination.origin,
                     address: $scope.driver.destination.ac.result,
                     geopoints: {
@@ -71,7 +71,7 @@ define(['./module'], function (controllers) {
 						lng : $scope.driver.destination.ac.details.geometry.location.lng()
 					}
    
-                },
+                }],
 				price: $scope.driver.price,
 				date : $scope.driver.date
             });
