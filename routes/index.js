@@ -16,29 +16,19 @@ exports.init = function(app, modules){
     app.get('/passengerForm', function(req, res) {
 		res.render('partials/passengerForm');
 	})
-
-	app.get('/sockets', function(req, res) {
-		res.render('sockets-test')
-	});
-	app.get('/driver', function(req, res){
-		//db.getOrders({}, function(err, data){
-			res.render('index', {result : [], RequestedUserType : "passenger"});
-	//	});
-	});
-
 	app.get('/', function(req, res){
 		db.getOrders({}, function(err, data){
-			console.log(data);
 			res.render('index', {
-				result : data,
-				RequestedUserType : "driver",
+				err: err,
+				orders : data,
+				user : req.session.passport.user,
 				title: 'Destination.to'
 			});
 		});
 	});
 
     app.get('/login/fb', function(req, res){
-		modules.social.login("facebook", req, res, ["email"]);
+		modules.social.login("facebook", req, res);
 	});
     app.get('/login/fbcallback', function(req, res){
 		modules.social.loginCallback("facebook", req, res);

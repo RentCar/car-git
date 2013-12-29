@@ -21,12 +21,20 @@ exports.init = function(server, sessionStore, cookieParser) {
 			}
 			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
 				function(err, trip){
+					var newtrip = {
+						"_id" : trip._id,
+						route : {points:points},
+						users : [null, session.passport.user],
+						startPrice : data.price
+					};
+					console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+					console.log(newtrip);
 					if(err) {
 						socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
 					}
 					else {
-						socket.broadcast.emit("onNewTrip", trip);
-						socket.emit("tripSaved", trip);
+						socket.broadcast.emit("onNewOrder", newtrip);
+						socket.emit("tripSaved", newtrip);
 					}
 				});
 		})

@@ -13,7 +13,6 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 		first_name : String,
 		last_name : String,
 		email : String,
-		avatar : String,
 		karma : {type : Number, default : 0},
 		location : String,
 		gender : Boolean,
@@ -26,7 +25,8 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 		routes : [{
 			alias : String,
 			route : {type : Schema.Types.ObjectId, ref : 'route'}
-		}]
+		}],
+		driverStatus : {type : Number, default: 0}  //0 - not drive, 1 - busy, 2 - free
 	})),
 	pointModel = mongoose.model('point', new Schema({
 		lat : Number,
@@ -55,10 +55,10 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 	ScheduleModel = mongoose.model('schedule', new Schema({
 		startDate : {type: String, default: (new Date()).getTime()},
 		finishDate : String,
-		weeklySchedule : {type : Number, defult : 127}, //Math.floor(35 / Math.pow(2, 0)) % 2
+		weeklySchedule : {type : Number, defult : 127}, //Math.floor(WS / Math.pow(2, requestedDay)) % 2
 		user : {role : Boolean, id : {type : Schema.Types.ObjectId, ref : 'user'}},
 		route : {type : Schema.Types.ObjectId, ref : 'route'},
-		time : Number,
+		time : [{type: Number}],
 		trips : [{type : Schema.Types.ObjectId, ref : 'trip'}]
 	}));
 
@@ -95,8 +95,7 @@ exports.createOrder = function(user, points, price, date, callback){
 }
 
 exports.getOrders = function(filter, callback){
-	filter = filter || {};
-	tripModel.find(filter).populate("users").populate("route").exec(function(err, data){
+	tripModel.find(filter || {}).populate("users").populate("route").exec(function(err, data){
 		routeModel.populate(data, {
 			path: 'route.points',
 			model: pointModel
