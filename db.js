@@ -26,15 +26,34 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 			alias : String,
 			route : {type : Schema.Types.ObjectId, ref : 'route'}
 		}],
-		driverStatus : {type : Number, default: 0}  //0 - not drive, 1 - busy, 2 - free
+		driverStatus : {type : Number, default: 0},  //0 - not drive, 1 - busy, 2 - free
+		online : {type : Boolean, default : true},
+		currentPoint : {type : Schema.Types.ObjectId, ref : 'point'}
 	})),
-	pointModel = mongoose.model('point', new Schema({
-		lat : Number,
-		lng : Number,
-		country : String,
-		city : String,
-		address : String
-	})),
+	pointModel = mongoose.model('point', (function() {
+		var schema = new Schema({
+			latlng : {lat : Number, lng: Number},
+			country : String,
+			city : String,
+			addresses : [String],
+			lables: [{type : String}]
+		});
+		schema.methods.findOrSave = function(points, callback){
+		/*	var searchArray = [];
+			for (var i = 0; i < points.length; i++) {
+				searchArray.push(points[i].latLng);
+			}
+			this.model("point").find({latLng : {$in : searchArray}}, function(err, pointResult){
+				for(var i = 0; i < pointResults.length; i++) {
+					if(searchArray.indexOf(pointResult[i].latLng)) {
+						
+					}
+				}
+				var point = pointResult || new this.model("point")(filter);	
+			});*/
+		}
+		return schema;
+	})()),
 	routeModel = mongoose.model('route', new Schema({
 		points : [{type : Schema.Types.ObjectId, ref : 'point'}]
 	})),
@@ -61,10 +80,14 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 		time : [{type: Number}],
 		trips : [{type : Schema.Types.ObjectId, ref : 'trip'}]
 	}));
-
+	
 exports.saveUser = function(userObj, callback) {
 	var newUser = new userModel(userObj);
 	newUser.save(callback); 
+}
+
+exports.setDriverStatus = function(user, status, latLng){
+	userModel.update()
 }
 
 exports.createOrder = function(user, points, price, date, callback){

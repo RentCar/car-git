@@ -1,6 +1,6 @@
 var passport = require('passport'),
 	FacebookStrategy = require('passport-facebook').Strategy, 
-	GoogleStrategy = require('passport-google-oauth').OAuthStrategy,
+	GoogleStrategy = require('passport-google').Strategy,
 	LinkedInStrategy = require('passport-linkedin').Strategy,
 	VKontakteStrategy = require('passport-vkontakte').Strategy;
 //var pgModel = require('./pgModel');
@@ -14,8 +14,7 @@ var CONSTANTS = {
 	},
 	socialScopes = {
 		facebook : ["email"],
-		linkedin : ['r_basicprofile', 'r_emailaddress'],
-		google : 'https://www.googleapis.com/auth/userinfo.profile'
+		linkedin : ['r_basicprofile', 'r_emailaddress']
 	}
 passport.use(new FacebookStrategy({
 		clientID: "543776059050441",
@@ -39,25 +38,24 @@ passport.use(new FacebookStrategy({
 ));
 
 passport.use(new GoogleStrategy({
-	callbackURL: "http://94.244.155.77:"+CONFIG.appPort+"/login/gpcallback",
-	consumerKey : "651257534416.apps.googleusercontent.com",
-	consumerSecret: "RWh6eAMwAIczB9fkF4ZvJJe-"
-},
-function(token, tokenSecret, profile, done){
-	console.log("fuuuuuuuuuuuuck");
-	var user = {
-		first_name : profile.name.givenName,
-		last_name : profile.name.familyName,
-		email : profile.emails[0].value,
-		social : [{
-			id : profile.emails[0].value,
-			socialType : CONSTANTS.GOOGLE
-		}]
+    returnURL: "http://"+CONFIG.domain+":"+CONFIG.appPort+"/login/gpcallback",
+    realm: "http://"+CONFIG.domain+":"+CONFIG.appPort
+  },
+	function(identifier, profile, done) {
+		var user = {
+			first_name : profile.name.givenName,
+			last_name : profile.name.familyName,
+			email : profile.emails[0].value,
+			social : [{
+				id : profile.emails[0].value,
+				socialType : CONSTANTS.GOOGLE
+			}]
+		}
+		db.findOrSaveUser(user, function(err, data){
+			done(null, data);
+		});
 	}
-	db.findOrSaveUser(user, function(err, data){
-		done(null, data);
-	});
-}));
+));
 
 passport.use(new LinkedInStrategy({
 	consumerKey: "775lancq0kyao8",
