@@ -14,10 +14,12 @@ header #user-status #user-avatar {
 }
 header #user-status #user-avatar:hover {
   position: absolute;
+  width: 160px;
+  height: 160px;
+  -webkit-transition-property: height, width;
+  -webkit-transition-duration: 1s;
+  background: red;
   /*Transition*/
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
 }
 body {
   background-color: #1abc9c;
