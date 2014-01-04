@@ -6,6 +6,9 @@ exports.init = function(server, sessionStore, cookieParser) {
 	
 	sessionSockets.on('connection', function (err, socket, session) {
 		socket.emit("newUser", { hello: socket.store.id});
+		db.getOrders({}, function(err, orders){
+			socket.emit("getOrders", orders);
+		});
 		socket.on("driverForm", function(data){
 			if(!session.passport) {
 				socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
@@ -33,9 +36,8 @@ exports.init = function(server, sessionStore, cookieParser) {
 						socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
 					}
 					else {
-						console.log(trip);
-						socket.broadcast.emit("onNewOrder", newtrip);
-						socket.emit("tripSaved", newtrip);
+						socket.broadcast.emit("newOrder", newtrip);
+						socket.emit("SavedOrder", newtrip);
 					}
 				});
 		})
