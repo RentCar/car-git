@@ -49,17 +49,19 @@ define(['./module'], function (controllers) {
         }
 
         // Loading all trips for current user
-        socket.on("onReceiveTrips", function(data) {
+        socket.on("getOrders", function(data) {
+            console.log(data)
             $scope.$apply(function () {
                 $scope.trips = data
             });
         });
 
         // Adding new trips in live
-        socket.on("onNewTrip", function(data) {
+        socket.on("newTrip", function(data) {
             $scope.$apply(function () {
                 $scope.trips.unshift(data)
             });
         })
+        // TODO: savedOrder - to one of user ctrl
     }]);
 });

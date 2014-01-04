@@ -7,6 +7,7 @@ define(['./module'], function (directives) {
             restrict: 'E',
             transclude: true,
 //            scope: {},
+            // TODO: into template
             template: '<div>' +
                 '<h3>Trip {{trip._id}}</h3>' +
                 '<ul>' +
