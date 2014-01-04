@@ -14,13 +14,29 @@
     </ul>
     <!--/.Profile... -->
     <div id="user-status" class="nav navbar-nav navbar-right">
-        <% if(!user) { %>
-            <li><a class="btn btn-info btn-lg" href="/login/">login</a></li>
+        <% if(user) { %>
+            <div>
+                <a class="btn btn-warning btn-lg" href="/login/">login</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="btn btn-warning btn-lg" href="/login/gp">login</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-warning btn-lg" href="/login/fb">login</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-warning btn-lg" href="/login/vk">login</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-warning btn-lg" href="/login/linkedin">login</a>
+                    </li>
+                </ul>
+            </div>
         <!--<li><a href="/login/gp">login G+</a></li>-->
         <!--<li><a href="/login/fb">login fb</a></li>-->
         <% } else { %>
             <a href="/profile">
-                <img id="user-avatar" src="<%= user.photo||"/imgs/0bc5bc2.jpg"%>" alt="avatar" class="img-circle">
+                <img id="user-avatar" src="<%= user && user.photo||"/imgs/0bc5bc2.jpg"%>" alt="avatar" class="img-circle">
             </a>
         <% } %>
     </div>

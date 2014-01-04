@@ -16,6 +16,22 @@ var cookieParser = express.cookieParser('SecretPass')
   , sessionStore = new connect.middleware.session.MemoryStore();
 var social = require('./social');
 
+var I18n = require('i18n-2');
+I18n.expressBind(app, {
+    // setup some locales - other locales default to en silently
+    locales: ['ru', 'en', 'de', 'ua']
+});
+//app.use(i18n.init);
+app.locals({
+    'l':  I18n.__,
+//    'ln': i18n.__n,
+    'tr': function(data) {
+        console.log('from rendered : ' + data);
+        console.log(i18n.__('email'))
+        return "BLAVLA"
+    }
+});
+
 // all environments
 app.set('port', process.env.PORT || CONFIG.appPort);
 app.set('views', path.join(__dirname, 'views'));
@@ -39,10 +55,17 @@ app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
 
-var i18n = new (require('i18n-2'))({
-    // setup some locales - other locales default to the first locale
-    locales: ['en', 'de', 'ru', 'ua']
+
+// Localisation settings
+// Express Configuration
+app.configure(function() {
+    // Attach the i18n property to the express request object
+    // And attach helper methods for use in templates
+
+    // Set up the rest of the Express middleware
 });
+
+
 
 // development only
 if ('development' == app.get('env')) {
