@@ -7,6 +7,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 	sessionSockets.on('connection', function (err, socket, session) {
 		socket.emit("newUser", { hello: socket.store.id});
 		db.getOrders({}, function(err, orders){
+			console.log(orders);
 			socket.emit("getOrders", orders);
 		});
 		socket.on("driverForm", function(data){

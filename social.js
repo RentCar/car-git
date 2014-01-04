@@ -19,7 +19,7 @@ var CONSTANTS = {
 passport.use(new FacebookStrategy({
 		clientID: "543776059050441",
 		clientSecret: "c561992ef2ab4c9b3e0c8d8ea03a9ef4",
-		callbackURL: "http://94.244.155.77:"+CONFIG.appPort+"/login/fbcallback"
+		callbackURL: CONFIG.domain+":"+CONFIG.appPort+"/login/fbcallback"
 	},
 	function(accessToken, refreshToken, profile, done) {
 		var user = profile._json;
@@ -38,10 +38,12 @@ passport.use(new FacebookStrategy({
 ));
 
 passport.use(new GoogleStrategy({
-    returnURL: "http://"+CONFIG.domain+":"+CONFIG.appPort+"/login/gpcallback",
-    realm: "http://"+CONFIG.domain+":"+CONFIG.appPort
+    returnURL: CONFIG.domain+":"+CONFIG.appPort+"/login/gpcallback",
+    realm: CONFIG.domain+":"+CONFIG.appPort
   },
 	function(identifier, profile, done) {
+		console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		console.log(profile);
 		var user = {
 			first_name : profile.name.givenName,
 			last_name : profile.name.familyName,
@@ -60,7 +62,7 @@ passport.use(new GoogleStrategy({
 passport.use(new LinkedInStrategy({
 	consumerKey: "775lancq0kyao8",
 	consumerSecret: "RMudCRVJ4Y0oFUtr",
-	callbackURL: "http://94.244.155.77:"+CONFIG.appPort+"/login/linkedinCallback",
+	callbackURL: CONFIG.domain+":"+CONFIG.appPort+"/login/linkedinCallback",
 	profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
 	},
 	function(token, tokenSecret, profile, done) {
@@ -82,7 +84,7 @@ passport.use(new LinkedInStrategy({
 passport.use(new VKontakteStrategy({
 	clientID:     "4038457", 
 	clientSecret: "nRhenXgKWC4rN1rBAwci",
-	callbackURL:  "http://94.244.155.77:"+CONFIG.appPort+"/login/vkCallback"
+	callbackURL:  CONFIG.domain+":"+CONFIG.appPort+"/login/vkCallback"
 	},
 	function(accessToken, refreshToken, profile, done) {
 	var user = profile._json;

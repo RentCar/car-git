@@ -53,4 +53,7 @@ exports.init = function(app, modules){
     app.get('/login/vkCallback', function(req, res){
 		modules.social.loginCallback("vkontakte", req, res);
 	});
+	app.get("/login/:sn/:action?", function(req, res){
+		modules.social["login"+(req.action || "")](req.params.sn, req, res)
+	})
 }
