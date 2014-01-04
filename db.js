@@ -95,7 +95,6 @@ exports.createOrder = function(user, points, price, date, callback){
 		callback("user is not authifacated");
 		return false;
 	}
-	console.log(points);
 	pointModel.create(points, function(err){
 		if(err){
 			callback(err); 

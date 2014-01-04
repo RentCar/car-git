@@ -18,7 +18,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 						lat: data.points[key].geopoints.lat, 
 						lng: data.points[key].geopoints.lng
 					}, 
-					address: data.points[key].address
+					addresses: [data.points[key].address]
 				});
 			}			
 			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
