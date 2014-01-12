@@ -32,25 +32,46 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 	})),
 	pointModel = mongoose.model('point', (function() {
 		var schema = new Schema({
-			latlng : {lat : Number, lng: Number},
+			latlng : [{type : Number}],
 			country : String,
 			city : String,
 			addresses : [String],
-			lables: [{type : String}]
+			lables: [String]
 		});
-		schema.methods.findOrSave = function(points, callback){
-		/*	var searchArray = [];
-			for (var i = 0; i < points.length; i++) {
-				searchArray.push(points[i].latLng);
-			}
-			this.model("point").find({latLng : {$in : searchArray}}, function(err, pointResult){
-				for(var i = 0; i < pointResults.length; i++) {
-					if(searchArray.indexOf(pointResult[i].latLng)) {
-						
+		schema.statics.findOrSave = function(points, callback){
+			var i = 0,
+				pointsResults = [],
+				that = this;
+			function addPoint() {
+				that.collection.findAndModify({
+					latlng : points[i].latlng
+				}, [], {
+					$addToSet : {
+						addresses : { 
+							$each: points[i].addresses
+						}
 					}
-				}
-				var point = pointResult || new this.model("point")(filter);	
-			});*/
+				}, {
+					upsert: true, 
+					new: true
+				}, 
+				function(err, point){
+					if(err){
+						callback(err);
+						return;
+					}
+					pointsResults.push(point);
+					i++;
+					if(points[i]) {
+						addPoint();
+						return;
+					}
+					else {
+						callback(null, pointsResults);
+					}
+				});
+			}
+			addPoint();
 		}
 		return schema;
 	})()),
@@ -95,12 +116,13 @@ exports.createOrder = function(user, points, price, date, callback){
 		callback("user is not authifacated");
 		return false;
 	}
-	pointModel.create(points, function(err){
+	pointModel.findOrSave(points, function(err, points){
 		if(err){
 			callback(err); 
 			return;
 		}
-		var newRoute = new routeModel({points:[arguments[1], arguments[2]]});
+		console.log(points);
+		var newRoute = new routeModel({points:points});
 		newRoute.save(function(err, route){
 			if(err){
 				callback(err); 
