@@ -18,18 +18,23 @@
             <div>
                 <a ng-mouseenter="showLoginMenu()" class="btn btn-warning btn-lg" href="/login/">login</a>
                 <ul id="login-menu" class="dropdown-menu {{loginMenuState}}">
-                    <li>
-                        <a class="btn btn-warning btn-lg" href="/login/google">login</a>
-                    </li>
-                    <li>
-                        <a class="btn btn-warning btn-lg" href="/login/facebook">login</a>
-                    </li>
-                    <li>
-                        <a class="btn btn-warning btn-lg" href="/login/vk">login</a>
-                    </li>
-                    <li>
-                        <a class="btn btn-warning btn-lg" href="/login/linkedin">login</a>
-                    </li>
+
+                    <% for (var item in header.socialLogin) { %>
+                    <%//- item + " / " + header.socialLogin[item].name + " / " + header.socialLogin[item].enable %>
+
+                        <li>
+                            <a class="btn btn-warning btn-lg <%- !header.socialLogin[item].enable && "disabled" %>" href="/login/<%- item %>"><%- header.socialLogin[item].name %></a>
+                        </li>
+                    <% } %>
+                    <!--<li>-->
+                        <!--<a class="btn btn-warning btn-lg" href="/login/facebook">login</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a class="btn btn-warning btn-lg" href="/login/vk">login</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a class="btn btn-warning btn-lg" href="/login/linkedin">login</a>-->
+                    <!--</li>-->
                 </ul>
             </div>
         <!--<li><a href="/login/gp">login G+</a></li>-->
