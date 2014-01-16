@@ -3,6 +3,10 @@
  */
 define(['./module'], function (controllers) {
     'use strict';
-    controllers.controller('passengerFormCtrl', [function ($scope) {
+    controllers.controller('passengerFormCtrl', ['$scope', 'socket', function ($scope, socket)  {
+
+        socket.on('tripSavingError', function(data) {
+            console.log(data)
+        })
     }]);
 });

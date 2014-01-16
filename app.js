@@ -55,7 +55,6 @@ app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
 
-
 // Localisation settings
 // Express Configuration
 app.configure(function() {

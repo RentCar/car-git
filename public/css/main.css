@@ -21,6 +21,18 @@ header #user-status #user-avatar:hover {
   background: red;
   /*Transition*/
 }
+header #user-status .show {
+  display: block !important;
+}
+header #user-status .hide {
+  display: none;
+}
+header #user-status #login-menu {
+  display: none;
+  top: auto;
+  right: auto;
+  padding: 0px;
+}
 body {
   background-color: #1abc9c;
 }

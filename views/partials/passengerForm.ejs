@@ -1,6 +1,12 @@
 <h2>Passenger</h2>
 
-<form ng-controller="driverFormCtrl" class="form-horizontal" role="form">
+<form ng-controller="passengerOrderCtrl" class="form-horizontal" role="form">
+
+    <button ng-mouseenter="count = count + 1" ng-init="count=0">BUTTON</button>
+    <span>{{count}}</span>
+
+    <h3 ng-repeat="user in users">{{user.name}}</h3>
+
     <div class="form-group">
         <label class="col-sm-2 control-label"><%= __("email") %></label>
         <div class="col-sm-10">
