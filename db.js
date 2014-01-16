@@ -1,14 +1,14 @@
-var MongoClient = require('mongodb').MongoClient;
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
-DB = {
-	addr : 'localhost',
-	port : '27017',
-	name : 'test'
-}
+	Schema = mongoose.Schema,
+	DB = {
+		addr : 'localhost',
+		port : '27017',
+		name : 'test'
+	}
 mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
 
-var userModel = mongoose.model('user', new Schema({    //models definition
+//models definitions
+var userModel = mongoose.model('user', new Schema({
 		social : [{id: String, socialType : Number}],
 		first_name : String,
 		last_name : String,
@@ -37,12 +37,12 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 			city : String,
 			addresses : [String],
 			lables: [String]
-		});
+		});	
 		schema.statics.findOrSave = function(points, callback){
 			var i = 0,
 				pointsResults = [],
 				that = this;
-			function addPoint() {
+			function addPoint(){
 				that.collection.findAndModify({
 					latlng : points[i].latlng
 				}, [], {
@@ -72,26 +72,36 @@ var userModel = mongoose.model('user', new Schema({    //models definition
 				});
 			}
 			addPoint();
-		}
+		}	
 		return schema;
 	})()),
 	routeModel = mongoose.model('route', new Schema({
-		points : [{type : Schema.Types.ObjectId, ref : 'point'}]
+		points : [{type : Schema.Types.ObjectId, ref : 'point'}],
+		way : Number //meters
 	})),
-	tripModel = mongoose.model('trip', new Schema ({
-		date: {type: String, default: (new Date()).getTime()},
-		route : {type : Schema.Types.ObjectId, ref : 'route'},
-		users : [{type : Schema.Types.ObjectId, ref : 'user'}], //0 - driver, anyone else is passanger
-		startPrice : Number,
-		finalPrice : Number,
-		status : {type: Number, default: 0}, // 0 - not started, 1 - in progress, 2 - completed
-		responses : [{
-			user : {type : Schema.Types.ObjectId, ref : 'user'}, 
-			price : Number, 
-			message : String,
-			route : {type : Schema.Types.ObjectId, ref : 'route'}
-		}]
-	})),
+	tripModel = mongoose.model('trip', (function() {
+		var schema = new Schema ({
+			date: {type: String, default: (new Date()).getTime()},
+			route : {type : Schema.Types.ObjectId, ref : 'route'},
+			users : [{type : Schema.Types.ObjectId, ref : 'user'}], //0 - driver, anyone else is passanger
+			startPrice : Number,
+			finalPrice : Number,
+			status : {type: Number, default: 0}, // 0 - not started, 1 - in progress, 2 - completed
+			responses : [{
+				parrent : {type: Number, default: -1},
+				user : {type : Schema.Types.ObjectId, ref : 'user'}, 
+				price : Number, 
+				message : String,
+				route : {type : Schema.Types.ObjectId, ref : 'route'}
+			}]
+		});
+		schema.methods.respond = function(response, callback) {
+			this.responses = this.responses || [];
+			this.responses.push(response);
+			this.save(callback);
+		}
+		return schema
+	})()),
 	ScheduleModel = mongoose.model('schedule', new Schema({
 		startDate : {type: String, default: (new Date()).getTime()},
 		finishDate : String,
@@ -121,7 +131,6 @@ exports.createOrder = function(user, points, price, date, callback){
 			callback(err); 
 			return;
 		}
-		console.log(points);
 		var newRoute = new routeModel({points:points});
 		newRoute.save(function(err, route){
 			if(err){

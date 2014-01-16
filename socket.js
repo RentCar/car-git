@@ -8,7 +8,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 		socket.emit("newUser", { hello: socket.store.id});
 		socket.on("driverForm", function(data){
 			if(!session.passport) {
-				socket.emit("tripSavingError", {reason:"you should be registred to create an offer"});
+				socket.emit("tripSavingError", {reason:"you should be registred to create an order"});
 				return false;
 			}
 			var points = [];
@@ -19,7 +19,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 				});
 			}
 			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
-				function(err, trip){
+				function(err, trip){					
 					if(err) {
 						socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
 					}
@@ -30,10 +30,10 @@ exports.init = function(server, sessionStore, cookieParser) {
 							users : [null, session.passport.user],
 							startPrice : data.price
 						};
-						socket.broadcast.emit("onNewOrder", newtrip);
-						socket.emit("tripSaved", newtrip);
+						socket.broadcast.emit("newOrder", newtrip);
+						socket.emit("orderSaved", newtrip);
 					}
 				});
-		})
+		});
 	})
 }

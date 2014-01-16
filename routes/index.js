@@ -22,13 +22,32 @@ exports.init = function(app, modules){
 				err: err,
 				orders : data,
 				user : req.session.passport && req.session.passport.user,
-				title: 'Destination.to'
+				title: 'Destination.to',
+				header: {
+					socialLogin : { 
+						facebook : {
+							enable : true,
+							name: req.i18n.__("facebook")
+						}, 
+						vkontakte : {
+							enable : true,
+							name: req.i18n.__("vk")
+						},
+						linkedin : {
+							enable : true,
+							name: req.i18n.__("linkedin")
+						},
+						google : {
+							enable : true,
+							name: req.i18n.__("google")
+						}
+					}
+				}
 			});
 		});
 	});
 
 	app.get("/login/:sn/:action?", function(req, res){
-		console.log("here we are");
 		modules.social["login"+(req.params.action || "")](req.params.sn, req, res)
 	})
 }
