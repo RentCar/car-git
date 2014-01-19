@@ -77,9 +77,16 @@ define(['./module'], function (controllers) {
 
         $scope.driver.geoposition = userLocation.getCurrentPosition();
 
+        var orderCallback = function(data) {
+            console.log("Order Saved", data);
+            $scope.$apply(function() {
+                $scope.driver = {};
+            });
+        }
+
         $scope.offer = function() {
 			console.log($scope.driver.startpoint.ac.details.geometry);
-            socket.emit('driverForm', {
+            socket.emit('createOrder', {
                 geoposition: $scope.driver.geoposition || {x:0, y:0},
                 points :[{
 					origin: $scope.driver.startpoint.origin,
@@ -101,6 +108,13 @@ define(['./module'], function (controllers) {
 				price: $scope.driver.price,
 				date : $scope.driver.date
             });
+            socket.on("orderSaved", function(data) {
+                if(data.failed) {
+                    console.warn(data.reason, data.err || "")
+                } else {
+                    orderCallback(data);
+                }
+            })
         };
         $scope.locateMe = userLocation.getCurrentPosition
 

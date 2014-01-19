@@ -26,19 +26,8 @@
                             <a class="btn btn-warning btn-lg <%- !header.socialLogin[item].enable && "disabled" %>" href="/login/<%- item %>"><%- header.socialLogin[item].name %></a>
                         </li>
                     <% } %>
-                    <!--<li>-->
-                        <!--<a class="btn btn-warning btn-lg" href="/login/facebook">login</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a class="btn btn-warning btn-lg" href="/login/vk">login</a>-->
-                    <!--</li>-->
-                    <!--<li>-->
-                        <!--<a class="btn btn-warning btn-lg" href="/login/linkedin">login</a>-->
-                    <!--</li>-->
                 </ul>
             </div>
-        <!--<li><a href="/login/gp">login G+</a></li>-->
-        <!--<li><a href="/login/fb">login fb</a></li>-->
         <% } else { %>
             <a href="/profile">
                 <img id="user-avatar" src="<%= user && user.photo||"/imgs/0bc5bc2.jpg"%>" alt="avatar" class="img-circle">

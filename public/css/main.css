@@ -44,3 +44,7 @@ body {
 #conteiner p {
   color: #0f0f0f;
 }
+.ride-item img {
+  height: 100px;
+  width: 100px;
+}

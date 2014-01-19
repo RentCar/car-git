@@ -5,10 +5,17 @@ exports.init = function(server, sessionStore, cookieParser) {
 	sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 	
 	sessionSockets.on('connection', function (err, socket, session) {
+        db.getOrders({}, function(err, data) {
+            socket.emit("getOrders", data)
+        });
+
 		socket.emit("newUser", { hello: socket.store.id});
-		socket.on("driverForm", function(data){
+		socket.on("createOrder", function(data){
 			if(!session.passport) {
-				socket.emit("tripSavingError", {reason:"you should be registred to create an order"});
+				socket.emit("orderSaved", {
+                    failed: true,
+                    reason: "you should be registred to create an order"
+                });
 				return false;
 			}
 			var points = [];
@@ -21,7 +28,11 @@ exports.init = function(server, sessionStore, cookieParser) {
 			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
 				function(err, trip){					
 					if(err) {
-						socket.emit("tripSavingError", {reason: "An error has been occured while trip saving", err: err});
+						socket.emit("orderSaved", {
+                            failed: true,
+                            Eror: "An error has been occured while trip saving",
+                            err: err
+                        });
 					}
 					else {
 						var newtrip = {
