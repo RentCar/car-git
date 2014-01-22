@@ -28,7 +28,7 @@ var userModel = mongoose.model('user', new Schema({
 		}],
 		driverStatus : {type : Number, default: 0},  //0 - not drive, 1 - busy, 2 - free
 		online : {type : Boolean, default : true},
-		currentPoint : {type : Schema.Types.ObjectId, ref : 'point'}
+		currentLatlng : [{type : Number}]
 	})),
 	pointModel = mongoose.model('point', (function() {
 		var schema = new Schema({
@@ -112,6 +112,10 @@ var userModel = mongoose.model('user', new Schema({
 		trips : [{type : Schema.Types.ObjectId, ref : 'trip'}]
 	}));
 	
+userModel.update({online: true}, {online: false}, {multi : true}, function(err, res) {
+	console.log("-------------------------------");
+	console.log(arguments);
+});
 exports.saveUser = function(userObj, callback) {
 	var newUser = new userModel(userObj);
 	newUser.save(callback); 
@@ -164,10 +168,31 @@ exports.findOrSaveUser = function(profile, callback){
 			return
 		}
 		if(data) {
+			data.online = true;
+			data.save();
+			console.log(data);
 			callback(null, data);
 		}
 		else{
 			exports.saveUser(profile, callback);
 		}
 	})
+}
+
+exports.userLogout = function(id, callback) {
+	if(!id){
+		callback("first param is necessary");
+		return;
+	}
+	userModel.update({_id: id}, {online : false}, function(err, res){
+		callback(err);
+	});
+};
+
+exports.updateUserLocation = function(id, latlng, callback) {
+	userModel.update({_id : id}, {currentLatlng : latlng}, function(err){
+		callback(err);
+	});
+
+	
 }

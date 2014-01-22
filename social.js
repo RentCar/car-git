@@ -114,7 +114,20 @@ exports.loginCallback = function(sn, req, res){
 	passport.authenticate(sn, { successRedirect: '/',
 		failureRedirect: '/login' 
 	})(req, res);
-	/*passport.authenticate(sn, { successRedirect: '/',
-		failureRedirect: '/login' 
-	})(req, res)*/
+}
+
+exports.logout = function(req, callback) {
+	if(!req.session.passport.user) {
+		callback("you're not logged in");
+		return;
+	}
+	db.userLogout(req.session.passport.user._id, function(err, res){
+		if(err) {
+			callback(err);
+		}
+		else {
+			req.logout();
+			callback(null);
+		}
+	});
 }

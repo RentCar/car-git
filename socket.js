@@ -8,7 +8,15 @@ exports.init = function(server, sessionStore, cookieParser) {
         db.getOrders({}, function(err, data) {
             socket.emit("getOrders", data)
         });
-
+		socket.on("sendLocation", function(latlng) {
+			if(latlng) {
+				if(session.passport.user) {
+					db.updateUserLocation(session.passport.user._id, latlng, function(err){
+						err && (console.log(err))
+					})
+				}
+			}
+		});
 		socket.emit("newUser", { hello: socket.store.id});
 		socket.on("createOrder", function(data){
 			if(!session.passport) {
@@ -26,7 +34,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 				});
 			}
 			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
-				function(err, trip){					
+				function(err, trip){
 					if(err) {
 						socket.emit("orderSaved", {
                             failed: true,

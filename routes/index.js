@@ -17,6 +17,7 @@ exports.init = function(app, modules){
 		res.render('partials/passengerForm');
 	})
 	app.get('/', function(req, res){
+		console.log(req.session)
 		db.getOrders({}, function(err, data){
 			res.render('index', {
 				err: err,
@@ -49,6 +50,11 @@ exports.init = function(app, modules){
 
 	app.get("/login/:sn/:action?", function(req, res){
 		modules.social["login"+(req.params.action || "")](req.params.sn, req, res)
+	})
+	app.get("/logout", function(req, res){        //test route is to be removed when logout logic is moved to sockets
+		social.logout(req, function(err){
+			res.send(err || "I hope you are logged out");
+		});
 	})
 
 //    app.get("*", function(req, res) {

@@ -55,7 +55,7 @@ define(['./module'], function (controllers) {
                 }
             };
             // current geolocation
-            function getLocation() {
+            function getLocation() {                                           //TODO: It needs to be readeble, also a lot of logic is the same as in passanger ctrl so it can be reused
                 if (navigator.geolocation) {
                     return navigator.geolocation.getCurrentPosition(showPosition);
                 } else {
@@ -63,8 +63,9 @@ define(['./module'], function (controllers) {
                 }
             }
             function showPosition(position)  {
+				socket.emit("sendLocation", [position.coords.latitude, position.coords.longitude]);
                 console.log("Latitude: " + position.coords.latitude +
-                    "|| Longitude: " + position.coords.longitude);
+                    "|| Longitude23: " + position.coords.longitude);
                 return(position)
             }
 

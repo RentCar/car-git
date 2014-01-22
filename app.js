@@ -14,7 +14,7 @@ var app = express();
 var appPort = parseInt(process.argv.slice(2)) || 3000;
 var cookieParser = express.cookieParser('SecretPass')
   , sessionStore = new connect.middleware.session.MemoryStore();
-var social = require('./social');
+ social = require('./social');
 
 var I18n = require('i18n-2');
 I18n.expressBind(app, {
@@ -54,6 +54,7 @@ app.use(app.router);
 app.use(require('less-middleware')({ src: path.join(__dirname, 'public') }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/socket.io')));
+
 
 // Localisation settings
 // Express Configuration
