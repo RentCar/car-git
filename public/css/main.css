@@ -33,6 +33,9 @@ header #user-status #login-menu {
   right: auto;
   padding: 0px;
 }
+.map-canvas {
+  height: 400px;
+}
 body {
   background-color: #1abc9c;
 }

@@ -4,6 +4,9 @@ require.config({
         'domReady': 'libs/requirejs-domready/domReady',
         'angular': 'libs/angular/angular',
         'angular-route': 'libs/angular-route/angular-route',
+        'ui-utils': 'libs/angular-ui-utils/ui-utils',
+        'ui-map': 'libs/angular-ui-map/ui-map',
+        'ui-bootstrap': '/js/libs/angular-ui-bootstrap',
         'socket.io': '/socket.io/socket.io.js'
 //        'googleMaps': 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&key=AIzaSyB1TGYNrikCmxtjmCmkYtG5biJSpuYmHaU'
 //        'ng-Autocomplete': 'modules/ngAutocomplete'
