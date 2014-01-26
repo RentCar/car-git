@@ -47,7 +47,7 @@
     <div id="user-status" class="nav navbar-nav navbar-right">
         <% if(!user) { %>
             <div>
-                <a ng-mouseenter="showLoginMenu()" class="btn btn-warning btn-lg" href="/login/">login</a>
+                <a ng-mouseenter="showLoginMenu()" class="btn btn-warning btn-lg" href="#/login/">login</a>
                 <ul id="login-menu" class="dropdown-menu {{loginMenuState}}">
 
                     <% for (var item in header.socialLogin) { %>
