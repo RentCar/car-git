@@ -44,7 +44,14 @@ body {
 #conteiner p {
   color: #0f0f0f;
 }
+.ride-item hr {
+  clear: both;
+}
 .ride-item img {
   height: 100px;
   width: 100px;
+  float: left;
+}
+.ride-item button {
+  float: left;
 }

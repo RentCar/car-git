@@ -9,6 +9,7 @@ define(['./module'], function (directives) {
 //            scope: {},
             // TODO: into template
             template: '<div class="ride-item">' +
+                '<hr>' +
                 '<h3>{{trip.startPrice}}$ to {{trip.route.points[1].addresses[0]}} trip </h3>' +
                 // '<h4>Date: {{trip.date}}</h4>' +
                 '<img src="{{trip.users[0].photo}}">' +
@@ -19,6 +20,13 @@ define(['./module'], function (directives) {
                 '<li>Driver: {{trip.users[0].first_name}} {{trip.users[0].last_name}}</li>' +
                 '<li>email: {{trip.users[0].email}}</li>' +
                 '</ul>' +
+                '<button>Accept</button>' +
+                '<button>Save</button>' +
+                '<button>Connect</button>' +
+                '<button>User details</button>' +
+                '<button>Show trip</button>' +
+                '<button>more</button>' +
+                '<button>Never show from this user</button>' +
                 '</div>'
         };
     })
