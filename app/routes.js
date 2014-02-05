@@ -3,7 +3,7 @@
  */
 var db = require("./../db");
 
-exports.init = function(app, modules){
+module.exports = exports = function(app, _db, social) {
 	/**
     * Angular templates
     */
@@ -49,14 +49,13 @@ exports.init = function(app, modules){
 	});
 
 	app.get("/login/:sn/:action?", function(req, res){
-		modules.social["login"+(req.params.action || "")](req.params.sn, req, res)
-	})
+		social["login"+(req.params.action || "")](req.params.sn, req, res)
+	});
 	app.get("/logout", function(req, res){        //test route is to be removed when logout logic is moved to sockets
 		social.logout(req, function(err){
 			res.send(err || "I hope you are logged out");
 		});
-	})
-
+	});
 //    app.get("*", function(req, res) {
 //        res.render('partials/404', {
 //            data: JSON.stringify(req.params)
