@@ -8,9 +8,6 @@ require.config({
         'ui-map': 'libs/angular-ui-map/ui-map',
         'ui-bootstrap': '/js/local-libs/angular-ui-bootstrap',
         'socket.io': '/socket.io/socket.io.js'
-//        'googleMaps': 'https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false&key=AIzaSyB1TGYNrikCmxtjmCmkYtG5biJSpuYmHaU'
-//        'ng-Autocomplete': 'modules/ngAutocomplete'
-       // 'jquery': 'libs/jquery/jquery'
     },
     // angular does not support AMD out of the box, put it in a shim
     shim: {
@@ -19,14 +16,16 @@ require.config({
         },
         'angular-route' : {
             deps: ['angular']
+        },
+        'ui-bootstrap' : {
+            deps: ['angular']
+        },
+        'ui-utils' : {
+            deps: ['angular']
+        },
+        'ui-map' : {
+            deps: ['angular']
         }
-//        'googleMaps': {
-//            exports: 'googleMaps'
-//        }/*,
-//        'ngAutocomplete' : {
-//            deps: ['angular', 'googleMaps']
-//        }*/
-//        'autocomplete': {}
     },
     // kick start application
     deps: ['./angular-init']

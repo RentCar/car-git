@@ -4,27 +4,20 @@ define([
     'angular-route',
     'ui-utils',
     'ui-map',
-//    'ngAutocomplete',
     './controllers/index',
     './directives/index',
     './filters/index',
     './services/index'
-
-    ], function (ng, ngRoute, bootstrap) {
+    ], function (ng) {
         'use strict';
-
-    console.log("MODULES==================++++=========================");
-    console.log(ng, bootstrap, ngRoute );
-    console.log("MODULES==================++++=========================");
-    return ng.module('app', [
-        'ngRoute',
-//        'ngAutocomplete',
-        'app.services',
-        'app.filters',
-        'app.directives',
-        'app.controllers',
-        'ui.bootstrap',
-        'ui.utils',
-        'ui.map'
+        return ng.module('app', [
+            'ngRoute',
+            'app.services',
+            'app.filters',
+            'app.directives',
+            'app.controllers',
+            'ui.bootstrap',
+            'ui.utils',
+            'ui.map'
         ]);
 });

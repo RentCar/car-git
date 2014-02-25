@@ -12,15 +12,6 @@ header #user-status #user-avatar {
   height: 55px;
   width: 55px;
 }
-header #user-status #user-avatar:hover {
-  position: absolute;
-  width: 160px;
-  height: 160px;
-  -webkit-transition-property: height, width;
-  -webkit-transition-duration: 1s;
-  background: red;
-  /*Transition*/
-}
 header #user-status .show {
   display: block !important;
 }
