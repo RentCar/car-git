@@ -18,7 +18,6 @@ social = require('./social');
 var I18n = require('i18n-2');
 
 I18n.expressBind(app, {
-    // setup some locales - other locales default to en silently
     locales: ['ru', 'en', 'de', 'ua']
 });
 
@@ -59,7 +58,7 @@ app.configure('prod', function() {});
 
 social.init(app);
 
-db = {}
+db = {};
 // init routes
 routes(app, db, social);
 

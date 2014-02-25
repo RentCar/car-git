@@ -2,34 +2,32 @@
  * GET home page.
  */
 var db = require("./../db");
+var User = require("./controllers/user").User;
 
 module.exports = exports = function(app, _db, social) {
+
+    user = new User();
 	/**
     * Angular templates
     */
-	app.get('/userBlock', function(req, res) {
-		res.render('partials/userBlock');
-	})
-	app.get('/driverForm', function(req, res) {
-		res.render('partials/driverForm');
-	})
-    app.get('/passengerForm', function(req, res) {
-		res.render('partials/passengerForm');
-	})
-	app.get('/', function(req, res){
+	app.get('/userBlock', user.getDriverForm);
+	app.get('/driverForm', user.getDriverForm);
+    app.get('/passengerForm', user.getPassengerForm);
+    app.get('/', user.getExampleData);
+	app.get('/', function(req, res) {
 		console.log(req.session)
-		db.getOrders({}, function(err, data){
+		db.getOrders({}, function(err, data) {
 			res.render('index', {
 				err: err,
 				orders : data,
 				user : req.session.passport && req.session.passport.user,
 				title: 'Destination.to',
 				header: {
-					socialLogin : { 
+					socialLogin : {
 						facebook : {
 							enable : true,
 							name: req.i18n.__("facebook")
-						}, 
+						},
 						vkontakte : {
 							enable : true,
 							name: req.i18n.__("vk")
@@ -62,3 +60,4 @@ module.exports = exports = function(app, _db, social) {
 //        });
 //    });
 }
+
