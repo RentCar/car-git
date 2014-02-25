@@ -17,7 +17,6 @@ exports.init = function(server, sessionStore, cookieParser) {
 				}
 			}
 		});
-		socket.emit("newUser", { hello: socket.store.id});
 		socket.on("createOrder", function(data){
 			if(!session.passport) {
 				socket.emit("orderSaved", {
