@@ -19,7 +19,8 @@ define(['./app'], function (app) {
         })
 
          $routeProvider.otherwise({
-             redirectTo: '/passengerForm'
+             templateUrl: 'greeting'
+//             redirectTo: 'greeting.html'
          });
      }]);
  });

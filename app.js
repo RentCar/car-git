@@ -5,6 +5,7 @@
 CONFIG = require('./config');
 var express = require('express');
 var routes = require('./app/routes');
+var sockets = require('./app/sockets');
 var http = require('http');
 var path = require('path');
 var connect = require('connect');
@@ -61,6 +62,7 @@ social.init(app);
 db = {};
 // init routes
 routes(app, db, social);
+sockets(app, cookieParser, sessionStore);
 
 
 // running the server

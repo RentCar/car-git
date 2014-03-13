@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <%- include head%>
-</head>
+<%- include head%>
 
 <body>
 
-<header class="navbar navbar-default navbar-static-top" role="navigation">
-    <%- include header%>
-</header>
+<%- include header%>
 
-    <!-- Begin page content -->
+<!-- Begin page content -->
 <div class="container">
 
     <div class="row">
+
         <div class="col-xs-12 col-md-6">
 
             <div data-ng-view></div>
@@ -41,5 +38,9 @@
         angular.bootstrap(document.getElementById("map"), ['app.ui-map']);
     }
 </script>
+
+<!--partial tpls -->
+<%- include partials %>
+
 </body>
 </html>
