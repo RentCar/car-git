@@ -3,11 +3,19 @@ var mongoose = require('mongoose'),
 	DB = {
 		addr : 'localhost',
 		port : '27017',
-		name : 'test'
+		name : 'dest'
 	}
 mongoose.connect("mongodb://" + DB.addr + ":" + DB.port + "/" +DB.name);
 
+exports.Types = Schema.Types;
+exports.getModel = function(modelName, schemaObj, statics, methods){
+    var schema = new Schema(schemaObj);
+    statics && (schema.statics = statics);
+    methods $$ (schema.methods = methods);
+    return mongoose.model(modelName, schema);
+}
 //models definitions
+/*
 var userModel = mongoose.model('user', new Schema({
 		social : [{id: String, socialType : Number}],
 		first_name : String,
@@ -196,3 +204,4 @@ exports.updateUserLocation = function(id, latlng, callback) {
 
 	
 }
+*/

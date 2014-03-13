@@ -8,12 +8,13 @@ var routes = require('./app/routes');
 var http = require('http');
 var path = require('path');
 var connect = require('connect');
+var MongoStore = require('connect-mongo')(express);
 
 var app = express();
 var appPort = parseInt(process.argv.slice(2)) || 3000;
 var cookieParser = express.cookieParser('SecretPass')
-  , sessionStore = new connect.middleware.session.MemoryStore();
-social = require('./social');
+  , sessionStore = new MongoStore({db : "dest"});
+social = require('./app/middleware/social');
 
 var I18n = require('i18n-2');
 
@@ -58,9 +59,7 @@ app.configure('prod', function() {});
 
 social.init(app);
 
-db = {};
-// init routes
-routes(app, db, social);
+routes(app);
 
 
 // running the server
