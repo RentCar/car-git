@@ -10,52 +10,18 @@ define(['./module'], function (controllers) {
             destination: {}
         };
 
-        var userLocation = (function() {
-            var l = {};
-            // default config for autocomplete
-            l.ac = {
-                startpoint : {
-                    result: '',
-                    options: '',
-                    details: ''
-                },
-                destination : {
-                    result: '',
-                    options: '',
-                    details: ''
-                }
-            };
-            // current geolocation
-            function getLocation() {
-                if (navigator.geolocation) {
-                    return navigator.geolocation.getCurrentPosition(showPosition);
-                } else {
-                    console.log("No geolocation, get Chrome")
-                }
-            }
-            function showPosition(position)  {
-                console.log("Latitude: " + position.coords.latitude +
-                    "|| Longitude: " + position.coords.longitude);
-                return(position)
-            }
-
-            l.getCurrentPosition = getLocation
-            return l
-        }());
-
-        $scope.driver.startpoint.ac = userLocation.ac.startpoint;
-        $scope.driver.destination.ac = userLocation.ac.destination;
-
-        $scope.driver.geoposition = userLocation.getCurrentPosition();
-
         var orderCallback = function(data) {
             console.log("Order Saved", data);
             $scope.$apply(function() {
                 $scope.driver = {};
             });
-        }
+        };
 
         $scope.offer = function() {
+
+            console.log("Offer click!!!")
+            return;
+
             console.log($scope.driver.startpoint.ac.details.geometry);
             socket.emit('createOrder', {
                 geoposition: $scope.driver.geoposition || {x:0, y:0},
@@ -87,7 +53,6 @@ define(['./module'], function (controllers) {
                 }
             })
         };
-        $scope.locateMe = userLocation.getCurrentPosition
 
     }]);
 });
