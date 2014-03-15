@@ -1,5 +1,7 @@
 var Order = require("./app/controllers/order"),
-    orderCtr = new Order();
+    User = require("./app/controllers/order"),
+    orderCtr = new Order(),
+    userCtr = new User();
 exports.init = function(server, sessionStore, cookieParser) {
 	var io = require('socket.io').listen(server),
 	SessionSockets = require('session.socket.io'),
@@ -12,7 +14,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 		socket.on("sendLocation", function(latlng) {
 			if(latlng) {
 				if(session.passport.user) {
-					db.updateUserLocation(session.passport.user._id, latlng, function(err){
+                    userCtr.updateLocation(session.passport.user._id, latlng, function(err){
 						err && (console.log(err))
 					})
 				}

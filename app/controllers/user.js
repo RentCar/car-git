@@ -31,6 +31,11 @@ User.prototype = {
                 callback(null);
             }
         });
+    },
+    updateLocation : function(id, latlng, callback) {
+        userModel.update({_id : id}, {currentLatlng : latlng}, function(err){
+            callback(err);
+        })
     }
 }
 
