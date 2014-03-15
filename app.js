@@ -8,7 +8,6 @@ var routes = require('./app/routes');
 var sockets = require('./app/sockets');
 var http = require('http');
 var path = require('path');
-var connect = require('connect');
 var MongoStore = require('connect-mongo')(express);
 
 var app = express();

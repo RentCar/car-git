@@ -9,12 +9,8 @@ var CONSTANTS = {
 		GOOGLE : 2,
 		LINKEDIN : 3,
 		VK : 4
-	},
-	socialScopes = {
-		facebook : ["email"],
-		linkedin : ['r_basicprofile', 'r_emailaddress']
 	};
-	
+var userModel = require("./../models/userModel")
 passport.use(new FacebookStrategy({
 		clientID: "543776059050441",
 		clientSecret: "c561992ef2ab4c9b3e0c8d8ea03a9ef4",
@@ -27,8 +23,8 @@ passport.use(new FacebookStrategy({
 			id : profile.id,
 			socialType : CONSTANTS.FACEBOOK
 		}];
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -48,8 +44,8 @@ passport.use(new GoogleStrategy({
 				socialType : CONSTANTS.GOOGLE
 			}]
 		}
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -61,7 +57,7 @@ passport.use(new LinkedInStrategy({
 	profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
 	},
 	function(token, tokenSecret, profile, done) {
-		db.findOrSaveUser({
+        userModel.findOrSave({
 			first_name : profile._json.firstName,
 			last_name : profile._json.lastName,
 			email : profile._json.emailAddress,
@@ -71,7 +67,7 @@ passport.use(new LinkedInStrategy({
 			}]
 		}, 
 		function(err, data){
-			done(null, data);
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -87,8 +83,8 @@ passport.use(new VKontakteStrategy({
 			id : profile.id,
 			socialType : CONSTANTS.VK
 		}];
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
   }
 ));
