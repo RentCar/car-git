@@ -1,5 +1,5 @@
-var db = require("./../../db"),
-    User = db.getModel("user", {
+var db = require("./../../db");
+module.exports = db.getModel("user", {
         social : [{id: String, socialType : Number}],
         first_name : String,
         last_name : String,
@@ -45,4 +45,3 @@ var db = require("./../../db"),
             this.update({_id: id}, {online : false}, callback);
         }
     });
-module.exports = User;
