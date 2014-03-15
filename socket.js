@@ -1,11 +1,12 @@
-var db = require("./db");
+var Order = require("./app/controllers/order"),
+    orderCtr = new Order();
 exports.init = function(server, sessionStore, cookieParser) {
 	var io = require('socket.io').listen(server),
 	SessionSockets = require('session.socket.io'),
 	sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 	
 	sessionSockets.on('connection', function (err, socket, session) {
-        db.getOrders({}, function(err, data) {
+        orderCtr.getOrders({}, function(err, data) {
             socket.emit("getOrders", data)
         });
 		socket.on("sendLocation", function(latlng) {
@@ -17,7 +18,6 @@ exports.init = function(server, sessionStore, cookieParser) {
 				}
 			}
 		});
-		socket.emit("newUser", { hello: socket.store.id});
 		socket.on("createOrder", function(data){
 			if(!session.passport) {
 				socket.emit("orderSaved", {
@@ -33,7 +33,7 @@ exports.init = function(server, sessionStore, cookieParser) {
 					addresses: [data.points[key].address]
 				});
 			}
-			db.createOrder(session.passport.user, points, data.price, (new Date()).getTime(), 
+            orderCtr.create(session.passport.user.userID, points, data.price, (new Date()).getTime(),
 				function(err, trip){
 					if(err) {
 						socket.emit("orderSaved", {

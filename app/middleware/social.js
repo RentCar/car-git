@@ -4,19 +4,13 @@ var passport = require('passport'),
 	LinkedInStrategy = require('passport-linkedin').Strategy,
 	VKontakteStrategy = require('passport-vkontakte').Strategy;
 //var pgModel = require('./pgModel');
-var db = require('./db');
-
 var CONSTANTS = {
 		FACEBOOK : 1,
 		GOOGLE : 2,
 		LINKEDIN : 3,
 		VK : 4
-	},
-	socialScopes = {
-		facebook : ["email"],
-		linkedin : ['r_basicprofile', 'r_emailaddress']
 	};
-	
+var userModel = require("./../models/userModel")
 passport.use(new FacebookStrategy({
 		clientID: "543776059050441",
 		clientSecret: "c561992ef2ab4c9b3e0c8d8ea03a9ef4",
@@ -29,8 +23,8 @@ passport.use(new FacebookStrategy({
 			id : profile.id,
 			socialType : CONSTANTS.FACEBOOK
 		}];
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -50,8 +44,8 @@ passport.use(new GoogleStrategy({
 				socialType : CONSTANTS.GOOGLE
 			}]
 		}
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -63,7 +57,7 @@ passport.use(new LinkedInStrategy({
 	profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
 	},
 	function(token, tokenSecret, profile, done) {
-		db.findOrSaveUser({
+        userModel.findOrSave({
 			first_name : profile._json.firstName,
 			last_name : profile._json.lastName,
 			email : profile._json.emailAddress,
@@ -73,7 +67,7 @@ passport.use(new LinkedInStrategy({
 			}]
 		}, 
 		function(err, data){
-			done(null, data);
+			done(null, {userID : data._id});
 		});
 	}
 ));
@@ -89,14 +83,15 @@ passport.use(new VKontakteStrategy({
 			id : profile.id,
 			socialType : CONSTANTS.VK
 		}];
-		db.findOrSaveUser(user, function(err, data){
-			done(null, data);
+        userModel.findOrSave(user, function(err, data){
+			done(null, {userID : data._id});
 		});
   }
 ));
 
 exports.init = function(app) {
 	app.use(passport.initialize());
+	app.use(passport.session());
 	passport.serializeUser(function(user, done) {
 		done(null, user);
 	});
@@ -105,28 +100,3 @@ exports.init = function(app) {
 	});
 }
 
-exports.login = function(sn, req, res){
-	//sn means social network
-	passport.authenticate(sn, {scope: socialScopes[sn] || []})(req, res);
-}
-exports.loginCallback = function(sn, req, res){
-	passport.authenticate(sn, { successRedirect: '/',
-		failureRedirect: '/login' 
-	})(req, res);
-}
-
-exports.logout = function(req, callback) {
-	if(!req.session.passport.user) {
-		callback("you're not logged in");
-		return;
-	}
-	db.userLogout(req.session.passport.user._id, function(err, res){
-		if(err) {
-			callback(err);
-		}
-		else {
-			req.logout();
-			callback(null);
-		}
-	});
-}
