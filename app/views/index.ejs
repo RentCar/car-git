@@ -20,7 +20,6 @@
         <div class="col-xs-12 col-md-6">
             <h2>[Results]</h2>
 
-            <div data-ng-view></div>
             <div ng-controller="searchResultsCtrl">
                 <button ng-click="logTrips()"></button>
                 <ride-item ng-repeat="trip in trips"></ride-item>
