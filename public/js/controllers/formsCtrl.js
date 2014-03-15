@@ -111,7 +111,6 @@ define(['./module'], function (controllers) {
                 }
             })
         };
-        $scope.locateMe = userLocation.getCurrentPosition
 
     }]);
 
