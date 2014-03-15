@@ -1,7 +1,8 @@
 define([
     'angular',
     'ui-bootstrap',
-    'angular-route',
+//    'angular-route',
+    'ui-router',
     'ui-utils',
     'ui-map',
     './controllers/index',
@@ -11,7 +12,7 @@ define([
     ], function (ng) {
         'use strict';
         return ng.module('app', [
-            'ngRoute',
+            'ui.router',
             'app.services',
             'app.filters',
             'app.directives',

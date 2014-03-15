@@ -3,6 +3,6 @@
  */
 define(['angular'], function (ng, ngAutocomplete) {
     'use strict';
-    console.log("Defined Angular \nReturning module 'app.controllers", ng, ngAutocomplete);
+    console.log("Defined Angular \nReturning module 'app.controllers", ng);
      return ng.module('app.controllers', []);
 });

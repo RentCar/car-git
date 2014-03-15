@@ -1,5 +1,6 @@
 define([
     './formsCtrl',
+    './ordersCtrl',
     './socketsCtrl',
     './searchResultsCtrl'
 ], function () {
