@@ -11,22 +11,8 @@
 <div class="container">
 
     <div class="row">
-
-        <div ui-view class="col-xs-12 col-md-6">
-
-            <!--<section></section>-->
-            <!--<div data-ng-view></div>-->
-
-        </div>
-        <div class="col-xs-12 col-md-6">
-            <h2>[Results]</h2>
-
-            <div ng-controller="searchResultsCtrl">
-                <button ng-click="logTrips()"></button>
-                <ride-item ng-repeat="trip in trips"></ride-item>
-            </div>
-
-        </div>
+        <div ui-view="left" class="col-xs-12 col-md-6"></div>
+        <div ui-view="right" class="col-xs-12 col-md-6"></div>
     </div>
 
 </div>

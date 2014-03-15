@@ -5,5 +5,7 @@
 	"facebook": "facebook",
 	"vk": "vk",
 	"linkedin": "linkedin",
-	"google": "google"
+	"google": "google",
+	"I'm passenger": "Я пассажир",
+	"I'm driver": "Я водитель"
 }
