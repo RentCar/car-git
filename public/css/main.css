@@ -27,9 +27,6 @@ header #user-status #login-menu {
 .map-canvas {
   height: 400px;
 }
-.ui-view-container {
-  position: relative;
-}
 [ui-view].ng-enter,
 [ui-view].ng-leave {
   position: absolute;

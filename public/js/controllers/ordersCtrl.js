@@ -5,8 +5,8 @@
 define(['./module'], function (controllers) {
     'use strict';
 
-    controllers.controller('showOrderCtrl', ['$scope', function($scope) {
-
+    controllers.controller('showOrderCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
+        $scope.id = $stateParams.id;
     }]);
 
 });

@@ -37,9 +37,7 @@ define(['./app'], function (app) {
                 views: {
                     left: {
                         templateUrl: 'order',
-                        controller: function($scope, $stateParams) {
-                            $scope.id = $stateParams.id;
-                        }
+                        controller: 'showOrderCtrl'
                     }
                 }
             }).state('order.info', {

@@ -166,34 +166,19 @@ define(['./module'], function (controllers) {
             zoom: 15,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
+//        google.maps.event.trigger(map, "resize");
+
     }]);
 
 
 
     controllers.controller('headerCtrl', ['$scope', function($) {
         $.loginMenuState = 'hide'
-        $.test = [
-            1,2,3,4,5,6,7,8,9
-        ]
 
         // menu api
         $.showLoginMenu = function() {
             $.loginMenuState = 'show'
         }
     }]);
-
-    controllers.controller('passengerOrderCtrl', ['$scope', 'socket', function($, socket) {
-        $.users = [{
-            name: "User1",
-            info: "test1"
-        },{
-            name: "User2",
-            info: "test2"
-        },{
-            name: "User3",
-            info: "test3"
-        }]
-    }]);
-
 
 });

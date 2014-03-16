@@ -8,9 +8,8 @@ module.exports = exports = function(app) {
 
     var user = new User(),
         index = new Index();
-	/**
-    * Angular templates
-    */
+
+    // Web App
 	app.get('/', index.webRender);
 	app.get("/login/:sn", function(req, res){
 		user.login(req.params.sn, req, res)
@@ -23,5 +22,11 @@ module.exports = exports = function(app) {
 			res.send(err || "I hope you are logged out");
 		});
 	});
+
+    // API
+    // TODO: API
+
+    // Admin
+    app.get('/admin', index.adminApp);
 }
 
