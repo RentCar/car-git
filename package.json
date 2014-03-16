@@ -22,8 +22,9 @@
     "connect": ">=0",
     "cookie": ">=0",
     "session.socket.io": ">=0",
-	"passport-linkedin": ">=0",
-	"passport-vkontakte": ">=0",
-    "i18n-2": ">=0"
+    "passport-linkedin": ">=0",
+    "passport-vkontakte": ">=0",
+    "i18n-2": ">=0",
+    "connect-mongo": "~0.4.0"
   }
 }

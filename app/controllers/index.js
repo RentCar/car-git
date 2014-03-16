@@ -40,10 +40,11 @@ Index.prototype = {
         else {
             renderView();
         }
-
-
+    },
+    adminApp : function(req, res) {
+//        if(req.param) TODO: implement user security
+        res.render('admin/index')
     }
-
 }
 
 module.exports = Index;

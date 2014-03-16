@@ -8,39 +8,55 @@ define(['./app'], function (app) {
         $stateProvider
             .state('driver', {
                 url: '/driverForm',
-                templateUrl: 'driverForm',
-                controller: 'driverFormCtrl'
+                views: {
+                    left: {
+                        templateUrl: 'driverForm',
+                        controller: 'driverFormCtrl'
+                    },
+                    right: {
+                        templateUrl: 'results',
+                        controller: 'searchResultsCtrl'
+                    }
+                }
             })
             .state('passenger', {
                 url: '/passengerForm',
-                templateUrl: 'passengerForm',
-                controller: 'passengerFormCtrl'
+                views: {
+                    left: {
+                        templateUrl: 'passengerForm',
+                        controller: 'passengerFormCtrl'
+                    },
+                    right: {
+                        templateUrl: 'results',
+                        controller: 'searchResultsCtrl'
+                    }
+                }
+            })
+            .state('order', {
+                url: '/order/:id',
+                views: {
+                    left: {
+                        templateUrl: 'order',
+                        controller: 'showOrderCtrl'
+                    }
+                }
+            }).state('order.info', {
+                url: '/info',
+                template: 'Order Info'
+            }).state('order.save', {
+                url: '/save',
+                template: 'Order SAVING'
+            }).state('order.del', {
+                url: '/del',
+                template: 'Order delete'
             })
             .state('def' ,{
                 url: '/greeting',
-                templateUrl: 'greeting'
+                views: {
+                    left: {
+                        templateUrl: 'greeting'
+                    }
+                }
             })
     }]);
-
-    return app.config(['$routeProvider', function ($routeProvider) {
-
-        $routeProvider.when('/passengerForm', {
-
-        });
-
-        $routeProvider.when('/userBlock', {
-            templateUrl: 'userBlock',
-            controller: 'userCtrl'
-        })
-
-        $routeProvider.when('/driverForm', {
-            templateUrl: 'driverForm',
-            controller: 'driverFormCtrl'
-        })
-
-         $routeProvider.otherwise({
-
-//             redirectTo: 'greeting.html'
-         });
-     }]);
  });
