@@ -16,8 +16,7 @@ Order.prototype = {
             }, callback);
         });
     },
-    create : function(userID, points, price, date, callback) {
-        console.log(arguments)
+    create : function(userID, points, price, date, callback) {s
         if(!userID) {
             callback("user is not authifacated");
             return false;

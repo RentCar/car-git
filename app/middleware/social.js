@@ -24,7 +24,7 @@ passport.use(new FacebookStrategy({
 			socialType : CONSTANTS.FACEBOOK
 		}];
         userModel.findOrSave(user, function(err, data){
-			done(null, {userID : data._id});
+			done(null, {_id : data._id});
 		});
 	}
 ));
