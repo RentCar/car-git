@@ -19,7 +19,7 @@ module.exports = exports = function(app) {
     });
 	app.get("/logout", function(req, res){        //test route is to be removed when logout logic is moved to sockets
 		user.logout(req, function(err){
-			res.send(err || "I hope you are logged out");
+			res.send(err || "I hope you are logпвапвged out");
 		});
 	});
 

@@ -59,18 +59,10 @@ app.configure('prod', function() {});
 
 social.init(app);
 
-routes(app);
-db = {};
 // init routes
-routes(app, db, social);
-sockets(app, cookieParser, sessionStore);
-
-
+routes(app);
 // running the server
 var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
-
-var socket = require("./socket.js");
-
-socket.init(server, sessionStore, cookieParser);
+sockets(app, server, sessionStore, cookieParser);

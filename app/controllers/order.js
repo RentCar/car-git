@@ -16,11 +16,19 @@ Order.prototype = {
             }, callback);
         });
     },
-    create : function(userID, points, price, date, callback) {s
+    create : function(userID, data, callback) {
         if(!userID) {
             callback("user is not authifacated");
             return false;
         }
+        var points = [];
+        for(var key in data.points) {
+            points.push({
+                latlng : [data.points[key].geopoints.lat, data.points[key].geopoints.lng],
+                addresses: [data.points[key].address]
+            });
+        }
+        console.log(points);
         pointModel.findOrSave(points, function(err, points){
             if(err){
                 callback(err);
@@ -35,8 +43,7 @@ Order.prototype = {
                 var newOrder = new orderModel({
                     route : route,
                     users : [null, userID],
-                    startPrice : price,
-                    date : date
+                    startPrice : data.price
                 });
                 newOrder.save(callback);
             });
