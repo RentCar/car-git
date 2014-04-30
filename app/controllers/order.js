@@ -9,7 +9,7 @@ function Order() {
 
 Order.prototype = {
     getOrders : function(filter, callback) {
-        orderModel.find(filter || {}).populate("users").populate("route").exec(function(err, data){
+        orderModel.find(filter || {}).populate("users").populate("route").sort({date: -1}).exec(function(err, data){
             routeModel.populate(data, {
                 path: 'route.points',
                 model: pointModel
@@ -28,7 +28,6 @@ Order.prototype = {
                 addresses: [data.points[key].address]
             });
         }
-        console.log(points);
         pointModel.findOrSave(points, function(err, points){
             if(err){
                 callback(err);
