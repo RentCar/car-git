@@ -24,6 +24,9 @@
       "angular-ui-router": "0.2.8-bowratic-tedium",
       "requirejs": "~2.1.8",
       "requirejs-domready": "~2.0.1",
-      "angular-ui-map": "~0.5.0"
+      "angular-ui-map": "~0.5.0",
+	  "ember" : "1.5.1",
+	  "jquery" : "~1.10.2",
+	  "handlebars" : "1.1.2"
   }
 }

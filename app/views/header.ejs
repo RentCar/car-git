@@ -1,5 +1,5 @@
 <header class="navbar navbar-default navbar-static-top" role="navigation">
-    <div ng-controller="headerCtrl" class="container">
+    <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><%- title %></a>
 
@@ -18,7 +18,7 @@
             <div id="user-status" class="nav navbar-nav navbar-right pull-right">
                 <% if(!user) { %>
                 <div>
-                    <a ng-mouseenter="showLoginMenu()" class="btn btn-warning btn-lg" href="#/login/">login</a>
+                    <a class="btn btn-warning btn-lg" href="#/login/">login</a>
                     <ul id="login-menu" class="dropdown-menu {{loginMenuState}}">
 
                         <% for (var item in header.socialLogin) { %>
@@ -38,34 +38,5 @@
             </div>
 
         </div>
-
-
-        <div ng-controller="ModalDemoCtrl">
-            <!--Modal tpl-->
-            <script type="text/ng-template" id="myModalContent.html">
-                <div class="modal-header">
-                    <h3>I'm a modal!</h3>
-                </div>
-                <div class="modal-body">
-                    <ul>
-                        <li ng-repeat="item in items">
-                            <a ng-click="selected.item = item">{{ item }}</a>
-                        </li>
-                    </ul>
-                    <section id="map" ng-controller="MapCtrl" >
-                        <div ui-map="myMap" ui-options="mapOptions" class="map-canvas"></div>
-                    </section>
-                    Selected: <b>{{ selected.item }}</b>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" ng-click="ok()">OK</button>
-                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-                </div>
-            </script>
-            <!--Modal-->
-
-            <button class="btn btn-default" ng-click="open()">Map test</button>
-        </div>
-
     </div>
 </header>

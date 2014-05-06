@@ -33,10 +33,11 @@ User.prototype = {
         });
     },
     updateLocation : function(id, latlng, callback) {
-        userModel.update({_id : id}, {currentLatlng : latlng}, function(err){
-            callback(err);
-        })
-    }
+        userModel.update({_id : id}, {currentLatlng : latlng}, callback);
+    },
+	get : function(id, callback) {
+		userModel.findOne({_id : id}, callback);
+	}
 }
 
 module.exports = User
