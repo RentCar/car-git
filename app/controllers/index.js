@@ -6,6 +6,8 @@ function Index() {
 
 Index.prototype = {
     webRender : function(req, res) {
+		console.log("_______________________")
+		console.log(req.session);
         function renderView(user){
             res.render('index', {
                 user : user,
@@ -32,8 +34,8 @@ Index.prototype = {
                 }
             });
         }
-        if(req.session.passport && req.session.passport.user && req.session.passport.user.userID) {
-            UserModel.findOne({_id : req.session.passport.user.userID}, function(err, usr){
+        if(req.session.userID) {
+            UserModel.findOne({_id : req.session.userID}, function(err, usr){
                 renderView(usr);
             })
         }
@@ -41,7 +43,7 @@ Index.prototype = {
             renderView();
         }
     },
-    adminApp : function(req, res) {
+    adminApp : function(req, res) {	
 //        if(req.param) TODO: implement user security
         res.render('admin/index')
     }

@@ -1,14 +1,16 @@
 var Order = require("./controllers/order"),
-    User = require("./controllers/user"),
-    orderCtr = new Order(),
-    userCtr = new User();
+    userCtr = require("./controllers/user"),
+	orderCtr = new Order();
 	
 module.exports = function(app, server, sessionStore, cookieParser) {
 	var io = require('socket.io').listen(server),
         SessionSockets = require('session.socket.io'),
-        sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
-	
+        sessionSockets = new SessionSockets(io, sessionStore, cookieParser);	
+	userCtr.defineSocketProvider(io.sockets);
 	sessionSockets.on('connection', function (err, socket, session) {
+		session.socketID = socket.id;
+		session.save();
+		console.log(session)
         orderCtr.getOrders({}, function(err, data) {
             socket.emit("getOrders", data)
         });
