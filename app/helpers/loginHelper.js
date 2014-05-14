@@ -62,7 +62,8 @@ module.exports = (function(){
 															profile.social = [{
 																id : profile.id,
 																socialType : snConfig._id
-															}]
+															}];
+															profile.photo = "https://graph.facebook.com/"+profile.id+"/picture?type=large"
 														callback(null, profile);
 													} catch(e) {
 														//to e processed

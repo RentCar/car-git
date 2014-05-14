@@ -6,8 +6,6 @@ function Index() {
 
 Index.prototype = {
     webRender : function(req, res) {
-		console.log("_______________________")
-		console.log(req.session);
         function renderView(user){
             res.render('index', {
                 user : user,

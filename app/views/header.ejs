@@ -6,35 +6,34 @@
             <!--/ Main nav -->
             <ul id="main-menu" class="nav navbar-nav navbar-left">
                 <li>
-                    <a class="btn btn-success btn-lg" href="#/passengerForm"><%= __("I'm passenger")%></a>
+                    <a class="btn btn-success btn-lg" href="#/passenger"><%= __("I'm passenger")%></a>
                 </li>
                 <li>
                     <!--<a class="btn btn-info btn-lg" href="#/driverForm">driverForm</a>-->
-                    <a class="btn btn-info btn-lg" ui-sref="driver"><%= __("I'm driver")%></a>
+                    <a class="btn btn-info btn-lg" href="#/driver"><%= __("I'm driver")%></a>
                 </li>
             </ul>
 
             <!--/.Profile... -->
             <div id="user-status" class="nav navbar-nav navbar-right pull-right">
-                <% if(!user) { %>
-                <div>
-                    <a class="btn btn-warning btn-lg" href="#/login/">login</a>
-                    <ul id="login-menu" class="dropdown-menu {{loginMenuState}}">
-
+                {{#if user.profile }}
+				<a href="/profile">
+					<img id="user-avatar" {{bind-attr src=user.profile.photo}} alt="avatar" class="img-circle">
+                </a>                
+               {{else}}
+              <div>
+				<a {{action 'loginDropDown'}} class="btn btn-warning btn-lg" href="#">login</a>
+                   {{#if loginMenuOpened}}
+					<ul id="login-menu" class="dropdown-menu show">						
                         <% for (var item in header.socialLogin) { %>
-                        <%//- item + " / " + header.socialLogin[item].name + " / " + header.socialLogin[item].enable %>
-
                         <li>
-                            <a class="btn btn-warning btn-lg <%- !header.socialLogin[item].enable && "disabled" %>" href="/login/<%- item %>"><%- header.socialLogin[item].name %></a>
+                            <button {{action 'login' "/login/<%- item %>"}} class="btn btn-warning btn-lg <%- !header.socialLogin[item].enable && "disabled" %>"><%- header.socialLogin[item].name %></button>
                         </li>
                         <% } %>
                     </ul>
+					{{/if}}
                 </div>
-                <% } else { %>
-                <a href="/profile">
-                    <img id="user-avatar" src="<%= user && user.photo||"/imgs/0bc5bc2.jpg"%>" alt="avatar" class="img-circle">
-                </a>
-                <% } %>
+                {{/if}}
             </div>
 
         </div>

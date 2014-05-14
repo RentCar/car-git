@@ -1,6 +1,6 @@
 var db = require("./../../db"),
 User = db.getModel("user", {
-        social : [{id: String, socialType : Number}],
+        social : [{id: String, socialType : String}],
         first_name : String,
         last_name : String,
         email : String,
@@ -18,6 +18,7 @@ User = db.getModel("user", {
             route : {type : db.Types.ObjectId, ref : 'route'}
         }],
         driverStatus : {type : Number, default: 0},  //0 - not drive, 1 - busy, 2 - free
+		driverRate : Number,
         online : {type : Boolean, default : true},
         currentLatlng : {
             latlng : [{type : Number}],
@@ -43,6 +44,12 @@ User = db.getModel("user", {
         },
         logout : function(id, callback){
             this.update({_id: id}, {online : false}, callback);
-        }
+        },
+		findFreeDrivers : function(filter, callback) {
+			var filter = filter || {};
+			filter.driverStatus = 2;
+			filter.online = true;			
+			this.find(filter, callback);
+		}
     });
 module.exports = User;

@@ -16,23 +16,32 @@ module.exports = (function(){
 			var loginHelper = require("./../helpers/loginHelper");
 			loginHelper.socialLoginCallback(req, res, function(err, profile){
 				UserModel.findOrSave(profile, function(err, usr){
-					req.session.userID = usr._id;
-					socketProvider.socket(req.session.socketID).emit("login", usr);
-					res.send("<script>close();</script>");
+					if(err) {
+						console.log(err);
+					} else {
+						req.session.userID = usr._id;
+						socketProvider.socket(req.session.socketID).emit("setUser", usr);
+						res.send("<script>close();</script>");
+					}
 				})
 			});
 		},
-		logout : function(req, callback) {
-			if(!req.session.userID) {
+		setOffline : function(userID, callback) {
+			UserModel.logout(userID, function(err){
+				callback && callback(err || null);
+			})
+		},
+		logout : function(session, callback) {
+			if(!session.userID) {
 				callback("you're not logged in");
 				return;
 			}		
-			UserModel.logout(req.session.userID, function(err){
+			UserModel.logout(session.userID, function(err){
 				if(err) {
 					callback(err);
 				}
 				else {
-					req.logout();
+					delete session.userID;
 					callback(null);
 				}
 			});
@@ -42,6 +51,13 @@ module.exports = (function(){
 		},
 		get : function(id, callback) {
 			UserModel.findOne({_id : id}, callback);
+		},
+		updateUser : function(id, keyVal, callback) {
+			console.log(arguments);
+			UserModel.update({_id : id}, keyVal, callback);
+		},
+		getFreeDrivers : function(filter, callback) {
+			UserModel.findFreeDrivers(filter, callback);
 		}
 	}
 })();

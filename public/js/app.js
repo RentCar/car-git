@@ -309,7 +309,7 @@ App = Ember.Application.create({
 	Socket: EmberSockets.extend({
 		host: 'destination.in.ua',
 		port: 3000,
-		controllers: ['index']
+		controllers: ["user", "orders", "drivers"]
 	})
 
 });
@@ -324,17 +324,112 @@ App.IndexRoute = Ember.Route.extend({
     }*/
 });
 
+App.Router.map(function() {
+  this.resource('passenger');
+  this.resource('driver');
+})
 
 
 App.HeaderController = Ember.Controller.extend({
-	title : "bla bla"
-})
-App.IndexController = Ember.Controller.extend({
-	sockets : {
-		getOrders : function(orders){
-			this.set("orders", orders);
+	
+});
+
+App.ApplicationController = Ember.Controller.extend({
+	init : function(){
+		this.transitionTo(this.user && this.user.role || "passenger");
+		this.loginMenuOpened = false;
+	},
+	actions : {
+		loginDropDown : function(){
+			this.toggleProperty("loginMenuOpened");
+		},
+		login : function(path){
+			this.set("loginMenuOpened", false);
+			window.open(location.origin+path, "login", "height=500,width=500");
 		}
 	},
-	needs: "header",
-	head: Ember.computed.alias("controllers.header")
+	needs: "user",
+	user: Ember.computed.alias("controllers.user")
+});
+
+App.IndexController = Ember.Controller.extend({
+});
+
+App.UserController = Ember.Controller.extend({
+	init : function() {	
+	},
+	sockets : {
+		setUser : function(user) {
+            this.set("profile", user);
+			var _self = this;
+			this.addObserver("driverIsFree", true,  function(e){
+				_self.socket.emit("updateUser", {driverStatus : {"true" : 2, "false": 1}[e.driverIsFree+""]});
+			});
+		}
+	},
+	actions : {
+		positionChanged : function(position) {
+			this.socket.emit("sendLocation", position);
+			this.set("latLng", position);
+		},
+		saveDriverRate : function(rate) {
+			this.socket.emit("updateUser", {driverRate : rate});
+			this.set("profile.driverRate", rate);
+		},
+		getStartData : function(role) {
+			role && this.socket.emit(role == "driver" ? "driverInit" : "passengerInit");
+		}
+	}
+});
+
+App.OrdersController = Ember.ArrayController.extend({
+	init : function(){
+			
+	},
+	sockets : {
+		getOrders : function(orders){
+			this.set("model", orders);
+		}
+	}
+});
+
+App.DriverController = Ember.Controller.extend({
+	init : function(){
+		this.get("user").send("getStartData", "driver");
+		var _self = this;
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function(position){
+				_self.get("user").send("positionChanged", [position.coords.latitude, position.coords.longitude]);				
+			});
+		}
+	},
+	needs : ["orders", "user"],
+	orders : Ember.computed.alias("controllers.orders"),
+	user : Ember.computed.alias("controllers.user"),
+	actions : {
+		openSetRateDialog : function(){
+			this.toggleProperty("setRateDialogIsOpen");
+		},
+		saveDriverRate : function(){		
+			this.get("user").send("saveDriverRate", this.get("driverRate"));
+			this.set("setRateDialogIsOpen", false);
+		}
+	}
+});
+
+App.PassengerController = Ember.Controller.extend({
+	init : function(){
+		this.get("user").send("getStartData", "passenger");
+	},
+	needs : ["user", "drivers"],
+	user : Ember.computed.alias("controllers.user"),
+	drivers : Ember.computed.alias("controllers.drivers"),
+})
+
+App.DriversController = Ember.ArrayController.extend({
+	sockets : {
+		getDrivers : function(drivers){
+			this.set("model", drivers);
+		}
+	}
 });

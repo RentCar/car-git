@@ -3,23 +3,74 @@
 <%- include head %>
 <body>
 
-<script type="text/x-handlebars">
-    <%- include header %>
-	    {{outlet}}
-    <h1>
-        footer
-    </h1>
-</script>
+	<script type="text/x-handlebars">
+		<%- include header %>
+			{{outlet}}
+		<h1>
+			footer
+		</h1>
+	</script>
 
-<script type="text/x-handlebars" id="index">
-    <h2>index {{head.title}}</h2>
-    <div>
-        {{#each orders}}
-        <div>
-            {{startPrice}}
-        </div>
-        {{/each}}
-    </div>
- </script>
+	<script type="text/x-handlebars" id="index">
+		<h2>index {{head.title}}</h2>
+		<div>
+			Static indexInfo
+		</div>
+	 </script>
+	 
+	<script type="text/x-handlebars" id="passenger">
+		<div class="driverlist" style="float:right; margin-right: 10px">
+			<h2>Closest free drivers</h2>
+			<div>
+				{{#each drivers}}
+					<div>
+						{{first_name}}
+						<div>
+							{{driverRate}}
+						</div>
+					</div>
+				{{/each}}
+			</div>
+		</div>
+	 </script>
+	 
+	 <script type="text/x-handlebars" id="driver">
+		<div class="driver_status">
+			{{input type="checkbox" name="driverIsFree" checked=user.driverIsFree}} free
+		</div>
+		<div class="rate">
+			{{#if  user.profile.driverRate}}
+				<div>your rate: {{user.profile.driverRate}}</div>
+				<button {{action 'openSetRateDialog'}}>Change rate</button>
+			{{else}}
+				<button {{action 'openSetRateDialog'}}>Set rate</button>
+			{{/if}}
+			{{#if setRateDialogIsOpen}}
+				{{input type="text" value=driverRate size="5"}}
+				<button {{action 'saveDriverRate'}}>Ok</button>
+			{{/if}}
+		</div>
+		<div class="orders" style="float:right">
+		{{#each orders}}
+			{{order-one order=this}}
+		{{/each}}
+		</div>
+	 </script>
+	 
+	 <script type="text/x-handlebars" id="components/order-one">
+		<div>
+			{{#with order}}
+				<div>
+					from: {{route.points.0.addresses}}
+				</div>
+				<div>
+					to: {{route.points.1.addresses}}
+				</div>
+				<div>
+					price: {{startPrice}}
+				</div>
+			{{/with}}
+		</div>
+	 </script>
 </body>
 </html>
