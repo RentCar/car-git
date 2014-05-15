@@ -17,7 +17,8 @@ User = db.getModel("user", {
             alias : String,
             route : {type : db.Types.ObjectId, ref : 'route'}
         }],
-        driverStatus : {type : Number, default: 0},  //0 - not drive, 1 - busy, 2 - free
+        isFree : {type : Boolean, default : false},
+		isDriver : {type : Boolean, default : false},
 		driverRate : Number,
         online : {type : Boolean, default : true},
         currentLatlng : {

@@ -1,5 +1,5 @@
 
-module.exports = (function(){
+module.exports = function(app){
 	var UserModel = require("./../models/userModel"),
 		ConfigModel = require("./../models/configModel"),
 		passport = require("passport"),
@@ -53,11 +53,10 @@ module.exports = (function(){
 			UserModel.findOne({_id : id}, callback);
 		},
 		updateUser : function(id, keyVal, callback) {
-			console.log(arguments);
 			UserModel.update({_id : id}, keyVal, callback);
 		},
 		getFreeDrivers : function(filter, callback) {
 			UserModel.findFreeDrivers(filter, callback);
 		}
 	}
-})();
+};

@@ -1,16 +1,16 @@
 /*
  * GET home page.
  */
-var user = require("./controllers/user"),
-    Index = require("./controllers/index");
+var Index = require("./controllers/index");
 
 module.exports = exports = function(app) {
 
-    var index = new Index();
+    var index = new Index(),
+		user = app.get("ctr")("user");
 
     // Web App
 	app.get('/', index.webRender);
-	app.get("/login/:sn", function(req, res){
+	app.get("/login/:sn", function(req, res){		
 		user.login(req.params.sn, req, res)
 	});
     app.get("/SocialLogin/Callback", user.loginCallback);

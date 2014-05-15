@@ -56,7 +56,12 @@ app.configure('dev', function() {
 app.configure('stage', function() {});
 app.configure('prod', function() {});
 
-
+app.set("ctr", function(name) {
+	return require("./app/controllers/"+name)(app);
+})
+app.set("model", function(name) {
+	return require("./app/models/"+name+"Model");
+})
 social.init(app);
 
 // init routes
