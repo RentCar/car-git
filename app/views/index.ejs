@@ -36,11 +36,11 @@
 	 
 	 <script type="text/x-handlebars" id="driver">
 		<div class="driver_status">
-			{{input type="checkbox" name="driverIsFree" checked=user.driverIsFree}} free
+			{{input type="checkbox" name="isFree" checked=user.isFree}} free
 		</div>
 		<div class="rate">
-			{{#if  user.profile.driverRate}}
-				<div>your rate: {{user.profile.driverRate}}</div>
+			{{#if  user.driverRate}}
+				<div>your rate: {{user.driverRate}}</div>
 				<button {{action 'openSetRateDialog'}}>Change rate</button>
 			{{else}}
 				<button {{action 'openSetRateDialog'}}>Set rate</button>

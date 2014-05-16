@@ -48,7 +48,8 @@ User = db.getModel("user", {
         },
 		findFreeDrivers : function(filter, callback) {
 			var filter = filter || {};
-			filter.driverStatus = 2;
+			filter.isFree = true;
+			filter.isDriver = true;
 			filter.online = true;			
 			this.find(filter, callback);
 		}

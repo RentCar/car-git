@@ -2,12 +2,8 @@
 module.exports = function(app){
 	var UserModel = require("./../models/userModel"),
 		ConfigModel = require("./../models/configModel"),
-		passport = require("passport"),
-		socketProvider;
-	return {
-		defineSocketProvider : function(provider) {
-			socketProvider = provider;
-		},		
+		passport = require("passport");
+	return {	
 		login : function(sn, req, res){
 			var loginHelper = require("./../helpers/loginHelper");	
 			loginHelper.socialLoginRedirect(sn, req, res);
@@ -20,7 +16,7 @@ module.exports = function(app){
 						console.log(err);
 					} else {
 						req.session.userID = usr._id;
-						socketProvider.socket(req.session.socketID).emit("setUser", usr);
+						app.set("sockets").socket(req.session.socketID).emit("setUser", usr);
 						res.send("<script>close();</script>");
 					}
 				})

@@ -6,19 +6,19 @@
             <!--/ Main nav -->
             <ul id="main-menu" class="nav navbar-nav navbar-left">
                 <li>
-                    <a class="btn btn-success btn-lg" href="#/passenger"><%= __("I'm passenger")%></a>
+                    <a class="btn btn-success btn-lg" {{action switchRole "passenger"}} href="#/passenger"><%= __("I'm passenger")%></a>
                 </li>
                 <li>
                     <!--<a class="btn btn-info btn-lg" href="#/driverForm">driverForm</a>-->
-                    <a class="btn btn-info btn-lg" href="#/driver"><%= __("I'm driver")%></a>
+                    <a class="btn btn-info btn-lg" {{action switchRole "driver"}} href="#/driver"><%= __("I'm driver")%></a>
                 </li>
             </ul>
 
             <!--/.Profile... -->
             <div id="user-status" class="nav navbar-nav navbar-right pull-right">
-                {{#if user.profile }}
+                {{#if user }}
 				<a href="/profile">
-					<img id="user-avatar" {{bind-attr src=user.profile.photo}} alt="avatar" class="img-circle">
+					<img id="user-avatar" {{bind-attr src=user.photo}} alt="avatar" class="img-circle">
                 </a>                
                {{else}}
               <div>

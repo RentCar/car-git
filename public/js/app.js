@@ -336,7 +336,7 @@ App.HeaderController = Ember.Controller.extend({
 
 App.ApplicationController = Ember.Controller.extend({
 	init : function(){
-		this.transitionTo(this.user && this.user.role || "passenger");
+		this.transitionTo(this.user && this.user.isDriver ? "driver" : "passenger");
 		this.loginMenuOpened = false;
 	},
 	actions : {
@@ -346,6 +346,9 @@ App.ApplicationController = Ember.Controller.extend({
 		login : function(path){
 			this.set("loginMenuOpened", false);
 			window.open(location.origin+path, "login", "height=500,width=500");
+		},
+		switchRole : function(role){
+			this.get("user").send("switchRole", role);
 		}
 	},
 	needs: "user",
@@ -355,26 +358,32 @@ App.ApplicationController = Ember.Controller.extend({
 App.IndexController = Ember.Controller.extend({
 });
 
-App.UserController = Ember.Controller.extend({
+App.UserController = Ember.ObjectController.extend({
 	init : function() {	
 	},
 	sockets : {
 		setUser : function(user) {
-            this.set("profile", user);
+            this.set("model", user);
 			var _self = this;
-			this.addObserver("driverIsFree", true,  function(e){
-				_self.socket.emit("updateUser", {driverStatus : {"true" : 2, "false": 1}[e.driverIsFree+""]});
+			
+			this.addObserver("isFree", true,  function(e){
+				_self.socket.emit("updateUser", {"isFree" : _self.content.isFree});
 			});
+			this.transitionTo(this.content.isDriver ? "driver" : "passenger");
 		}
 	},
 	actions : {
+		switchRole : function(role){
+			this.socket.emit("updateUser", {isDriver : role=="driver"});
+			this.transitionTo(role)
+		},
 		positionChanged : function(position) {
 			this.socket.emit("sendLocation", position);
 			this.set("latLng", position);
 		},
 		saveDriverRate : function(rate) {
 			this.socket.emit("updateUser", {driverRate : rate});
-			this.set("profile.driverRate", rate);
+			this.set("driverRate", rate);
 		},
 		getStartData : function(role) {
 			role && this.socket.emit(role == "driver" ? "driverInit" : "passengerInit");

@@ -5,14 +5,22 @@ module.exports = function(app){
 		},
 		on : {
 			driverInit : function(params){
-				var _self = this;
+				var _self = this;	
+				app.get("ctr")("user").updateUser({isDriver : true}, function(err){
+					
+				});
 				app.get("ctr")("order").getOrders({}, function(err, data) {
 					_self.socket.emit("getOrders", data)
 				});
 			},
 			passengerInit : function(params) {
-				var _self = this;
-				app.get("ctr")("user").getFreeDrivers(params, function(err, drivers){
+				var _self = this
+					usrCtr = app.get("ctr")("user");
+					
+				usrCtr.updateUser({isDriver : false}, function(err){
+					
+				});
+				usrCtr.getFreeDrivers(params, function(err, drivers){
 					!err && drivers && _self.socket.emit("getDrivers", drivers);
 				})
 			},
@@ -22,15 +30,16 @@ module.exports = function(app){
 			sendLocation : function(latlng){
 				if(latlng) {
 					if(this.session.userID) {
-						userCtr.updateLocation(this.session.userID, latlng, function(err, drivers){
+						app.get("ctr")("user").updateLocation(this.session.userID, latlng, function(err){
 							err && console.log(err)
 						})
 					}
 				}
 			},
 			updateUser : function(update) {
-				app.get("ctr")("user").updateUser(this.session.userID, update, function(err){
-					
+				console.log(update);
+				this.session.userID && app.get("ctr")("user").updateUser(this.session.userID, update, function(err){
+					console.log(update);
 				});
 			},
 			createOrder : function(data){
@@ -45,7 +54,7 @@ module.exports = function(app){
 					if(err) {
 						socket.emit("orderSaved", {
 							failed: true,
-							Eror: "An error has been occured while trip saving",
+							Error: "An error has been occured while trip saving",
 							err: err
 						});
 					}

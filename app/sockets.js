@@ -4,8 +4,8 @@ module.exports = function(app, server, sessionStore, cookieParser) {
 		userCtr = app.get("ctr")("user"),
 		orderCtr = app.get("ctr")("order"),
 		socketApi = require("./api/socket")(app);
-		userCtr.defineSocketProvider(io.sockets);
-	
+		
+	app.set("sockets", io.sockets);
 	sessionSockets.on('connection', function (err, socket, session) {
 		session.socketID = socket.id;
 		session.save();
@@ -19,7 +19,7 @@ module.exports = function(app, server, sessionStore, cookieParser) {
 		for (var event in socketApi.on) {				
 			socket.on(event, (function(method){
 				return function(data){
-					socketApi.on[method].call({socket : socket, session : session}, arguments);
+					socketApi.on[method].apply({socket : socket, session : session}, arguments);
 				}
 			})(event));
 		};

@@ -58,7 +58,7 @@ app.configure('prod', function() {});
 
 app.set("ctr", (function(){
 	var ctrs = [];
-	return function(name) {	
+	return function(name) {
 		if(!ctrs[name]) {
 			ctrs[name] = require("./app/controllers/"+name)(app);
 		}
