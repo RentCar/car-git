@@ -1,4 +1,4 @@
-var db = require("./../../db");
+var db = require("./../../dbMongoose");
 module.exports = db.getModel("point", {
     latlng : [{type : Number}],
     country : String,

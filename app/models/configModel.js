@@ -1,4 +1,4 @@
-var db = require("./../../db");
+var db = require("./../../dbMongoose");
 module.exports = db.getModel("config", {
     socialNetworks : [{
 		_id : String,

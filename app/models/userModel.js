@@ -1,4 +1,4 @@
-var db = require("./../../db"),
+var db = require("./../../dbMongoose"),
 User = db.getModel("user", {
         social : [{id: String, socialType : String}],
         first_name : String,
@@ -21,9 +21,9 @@ User = db.getModel("user", {
 		isDriver : {type : Boolean, default : false},
 		driverRate : Number,
         online : {type : Boolean, default : true},
-        currentLatlng : {
-            latlng : [{type : Number}],
-            dateUpdate : {type: String, default: (new Date()).getTime()}
+        currentLngLat : {
+            lngLat : [{type : Number}],
+            dateUpdate : {type: Number, default: (new Date()).getTime()}
         }
     }, {
         findOrSave : function(profileObj, callback){

@@ -56,7 +56,7 @@ app.configure('dev', function() {
 app.configure('stage', function() {});
 app.configure('prod', function() {});
 
-app.set("ctr", (function(){
+/*app.set("ctr", (function(){
 	var ctrs = [];
 	return function(name) {
 		if(!ctrs[name]) {
@@ -64,7 +64,7 @@ app.set("ctr", (function(){
 		}
 		return ctrs[name];
 	}
-})());
+})());*/
 app.set("model", function(name) {
 	return require("./app/models/"+name+"Model");
 })

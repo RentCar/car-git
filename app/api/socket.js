@@ -6,40 +6,35 @@ module.exports = function(app){
 		on : {
 			driverInit : function(params){
 				var _self = this;	
-				app.get("ctr")("user").updateUser({isDriver : true}, function(err){
-					
+				app.get("ctr")("user").updateUser(this.session, {isDriver : true}, function(err){
+					_self.dsSocket.send("newDriver", {}, "ATATATA");
 				});
 				app.get("ctr")("order").getOrders({}, function(err, data) {
 					_self.socket.emit("getOrders", data)
 				});
 			},
 			passengerInit : function(params) {
-				var _self = this
+				var _self = this,
 					usrCtr = app.get("ctr")("user");
 					
-				usrCtr.updateUser({isDriver : false}, function(err){
+				usrCtr.updateUser(this.session, {isDriver : false}, function(err){
 					
 				});
 				usrCtr.getFreeDrivers(params, function(err, drivers){
 					!err && drivers && _self.socket.emit("getDrivers", drivers);
 				})
-			},
-			disconnect : function(){
-				this.session.userID && app.get("ctr")("user").setOffline(this.session.userID);
-			},
-			sendLocation : function(latlng){
-				if(latlng) {
-					if(this.session.userID) {
-						app.get("ctr")("user").updateLocation(this.session.userID, latlng, function(err){
-							err && console.log(err)
-						})
-					}
+			},			
+			sendLocation : function(lngLat){
+				if(lngLat) {
+				//	console.log(this)
+					this.dsSocket.set({$set: {lngLat : lngLat}}, function(err, result){
+						//console.log("location sent");
+						//console.log(arguments);
+					});
 				}
 			},
 			updateUser : function(update) {
-				console.log(update);
-				this.session.userID && app.get("ctr")("user").updateUser(this.session.userID, update, function(err){
-					console.log(update);
+				this.session.userID && app.get("ctr")("user").updateUser(this.session, update, function(err){
 				});
 			},
 			createOrder : function(data){

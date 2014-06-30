@@ -1,4 +1,4 @@
-var db = require("./../../db");
+var db = require("./../../dbMongoose");
 module.exports = db.getModel("order", {
     date: {type: String, default: (new Date()).getTime()},
     route : {type : db.Types.ObjectId, ref : 'route'},
